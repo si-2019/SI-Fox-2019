@@ -1,0 +1,23 @@
+{
+  "name": "si-fox-2019",
+  "version": "1.0.0",
+  "description": "* Dino Gafić\r * Fadil Kalača\r * Ajdina Memišević\r * Edina Osmnspahić\r * Šajla Pljakić\r * Dženana Šabović\r * Nedim Tarakčija\r * Amar Terović",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/si-2019/SI-Fox-2019.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/si-2019/SI-Fox-2019/issues"
+  },
+  "homepage": "https://github.com/si-2019/SI-Fox-2019#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
