@@ -2,6 +2,7 @@ const express = require('express');
 // init express
 const app = express();
 const port = /*process.env.port ||*/ 31906;
+const cors = require('cors');
 
 //npm run dev
 app.get('/', (req, res) => res.send('Hello World from FOX!'));
@@ -16,17 +17,29 @@ const studenti = [
         ispiti : [
             {naziv: 'I parcijalni ispit', bodovi: '15'},
             {naziv: 'II parcijalni ispit', bodovi: '15'},
-            {naziv: 'Usmeni ispit', bodovi: '20'},
+            {naziv: 'Usmeni ispit', bodovi: '20'}
         ],
         ukupno: 70,
         ocjena: 7
     }
 ];
 
+const ispiti = [
+    {naziv: 'I parcijalni ispit'},
+    {naziv: 'II parcijalni ispit'},
+    {naziv: 'Usmeni ispit'}
+]
 
-app.get('/api/fox/tabelaStudenti', (req, res) => {
+app.get('/api/fox/tabelaStudenti', cors(), (req, res) => {
+    //'/api/fox/tabelaStudenti?_limit=100'
     res.json(studenti);
 });
+
+app.get('/api/fox/tabelaStudenti/ispiti', cors(), (req, res) => {
+    //'/api/fox/tabelaStudenti?_limit=100'
+    res.json(ispiti);
+});
+
 
 
 
