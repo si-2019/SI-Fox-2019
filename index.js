@@ -4,8 +4,22 @@ const app = express();
 const port = /*process.env.port ||*/ 31906;
 const cors = require('cors');
 
+//database connection
+const db = require('./databaseConfig.js');  
+db.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+});
+   
+
 //npm run dev
 app.get('/', (req, res) => res.send('Hello World from FOX!'));
+
+//---------------Mikroservisi--------------------------------------------------------------------
+
+
+
+//---------------APIs--------------------------------------------------------------------
 
 //Return info for table Studenti
 const studenti = [
