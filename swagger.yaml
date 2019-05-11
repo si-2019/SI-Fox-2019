@@ -1,0 +1,441 @@
+---
+swagger: "2.0"
+info:
+  description: |
+    U ovom dokumentu su navedeni API-ji koje nudi modul profesori.
+  version: 1.0.0
+  title: Mikroservisi modula profesori
+host: virtserver.swaggerhub.com
+basePath: /dsabovic1/ProfesoriMikroservisi/1.0.0
+tags:
+- name: prisustvo
+  description: Sve vezano za prisustvo
+- name: bodoviIspiti
+  description: Sve vezano za bodove ostvarene na ispitima
+- name: ocjene
+  description: Sve vezano za ocjene
+- name: teme
+  description: Sve vezano za teme završnih radova
+schemes:
+- https
+- http
+paths:
+  /fox/prisustvoPredavanja:
+    post:
+      tags:
+      - prisustvo
+      summary: Upisuje se prisustvo studentu na predavanjima
+      operationId: addPrisustvoPredavanja
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Vrijednost koja se unosi za prisustvo na predavanjima studentu
+        required: true
+        schema:
+          $ref: '#/definitions/PrisustvoPredavanja'
+      responses:
+        405:
+          description: Invalid input
+  /fox/prisustvoVjezbe:
+    post:
+      tags:
+      - prisustvo
+      summary: Upisuje se prisustvo studentu na vjezbama
+      operationId: addPrisustvoVjezbe
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Vrijednost koja se unosi za prisustvo studentu na vjezbama
+        required: true
+        schema:
+          $ref: '#/definitions/PrisustvoVjezbe'
+      responses:
+        405:
+          description: Invalid input
+  /fox/prisustvoTutorijali:
+    post:
+      tags:
+      - prisustvo
+      summary: Upisuje se prisustvo studentu na tutorijalima
+      operationId: addPrisustvoTutorijali
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Vrijednost koja se unosi za prisustvo studentu na tutorijalima
+        required: true
+        schema:
+          $ref: '#/definitions/PrisustvoTutorijali'
+      responses:
+        405:
+          description: Invalid input
+  /fox/prisustvoPredavanja/{idStudenta}/{idPredmeta}/{brojSedmice}:
+    get:
+      tags:
+      - prisustvo
+      summary: Pronadji vrijednost prisustva na predavanjima
+      description: Vraća da, ne ili null na prisustvo na predavanjima za odgovarajuću sedmicu, studenta i predmet.
+      operationId: getPrisustvoPredavanja
+      produces:
+      - application/json
+      parameters:
+      - name: idStudenta
+        in: path
+        description: id studenta za kojeg trazimo prisustvo
+        required: true
+        type: integer
+        format: int64
+      - name: idPredmeta
+        in: path
+        description: id predmeta za kojeg trazimo prisustvo
+        required: true
+        type: integer
+        format: int64
+      - name: brojSedmice
+        in: path
+        description: broj sedmice za koju trazimo prisustvo
+        required: true
+        type: integer
+        format: int32
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PrisustvoPredavanja'
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Not found
+  /fox/prisustvoVjezbe/{idStudenta}/{idPredmeta}/{brojSedmice}:
+    get:
+      tags:
+      - prisustvo
+      summary: Pronadji vrijednost prisustva na vjezbama
+      description: Vraća da, ne ili null na prisustvo na vjezbama za odgovarajuću sedmicu, studenta i predmet.
+      operationId: getPrisustvoVjezbe
+      produces:
+      - application/json
+      parameters:
+      - name: idStudenta
+        in: path
+        description: id studenta za kojeg trazimo prisustvo
+        required: true
+        type: integer
+        format: int64
+      - name: idPredmeta
+        in: path
+        description: id predmeta za kojeg trazimo prisustvo
+        required: true
+        type: integer
+        format: int64
+      - name: brojSedmice
+        in: path
+        description: broj sedmice za koju trazimo prisustvo
+        required: true
+        type: integer
+        format: int32
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PrisustvoPredavanja'
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Not found
+  /fox/prisustvoTutorijali/{idStudenta}/{idPredmeta}/{brojSedmice}:
+    get:
+      tags:
+      - prisustvo
+      summary: Pronadji vrijednost prisustva na tutorijalima
+      description: Vraća da, ne ili null na prisustvo na tutorijalima za odgovarajuću sedmicu, studenta i predmet.
+      operationId: getPrisustvoTutorijali
+      produces:
+      - application/json
+      parameters:
+      - name: idStudenta
+        in: path
+        description: id studenta za kojeg trazimo prisustvo
+        required: true
+        type: integer
+        format: int64
+      - name: idPredmeta
+        in: path
+        description: id predmeta za kojeg trazimo prisustvo
+        required: true
+        type: integer
+        format: int64
+      - name: brojSedmice
+        in: path
+        description: broj sedmice za koju trazimo prisustvo
+        required: true
+        type: integer
+        format: int32
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/PrisustvoPredavanja'
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Not found
+  /fox/bodoviIspit:
+    post:
+      tags:
+      - bodoviIspiti
+      summary: Upisuje se broj bodova ostvarenih na odgovarajućem ispitu za studenta
+      operationId: addBodoviIspit
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Vrijednost koja se unosi za broj bodova studentu
+        required: true
+        schema:
+          $ref: '#/definitions/BodoviIspit'
+      responses:
+        405:
+          description: Invalid input
+  /fox/bodoviIspit/{idStudenta}/{idPredmeta}/{idIspita}:
+    get:
+      tags:
+      - bodoviIspiti
+      summary: Pronadji broj bodova na navedenom ispiu za odgovarajuceg studenta
+      description: Vraća broj bodova koje je student ostvario na ispitu.
+      operationId: getBrojBodova
+      produces:
+      - application/json
+      parameters:
+      - name: idStudenta
+        in: path
+        description: id studenta za kojeg trazimo broj bodova
+        required: true
+        type: integer
+        format: int64
+      - name: idPredmeta
+        in: path
+        description: id predmeta
+        required: true
+        type: integer
+        format: int64
+      - name: idIspita
+        in: path
+        description: id ispita
+        required: true
+        type: integer
+        format: int32
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/BodoviIspit'
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Not found
+  /fox/ocjena:
+    post:
+      tags:
+      - ocjene
+      summary: Upisuje se ocjena studentu
+      operationId: addOcjena
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Vrijednost koja se unosi za ocjenu studentu
+        required: true
+        schema:
+          $ref: '#/definitions/Ocjena'
+      responses:
+        405:
+          description: Invalid input
+  /fox/ocjena/{idStudenta}/{idPredmeta}:
+    get:
+      tags:
+      - ocjene
+      summary: Pronadji ocjenu za odgovarajuceg studenta
+      description: Vraća ocjenu studenta na navedenom predmetu.
+      operationId: getOcjena
+      produces:
+      - application/json
+      parameters:
+      - name: idStudenta
+        in: path
+        description: id studenta za kojeg trazimo broj bodova
+        required: true
+        type: integer
+        format: int64
+      - name: idPredmeta
+        in: path
+        description: id predmeta
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Ocjena'
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Not found
+  /fox/novaTema:
+    post:
+      tags:
+      - teme
+      summary: Upisuje se nova tema sa opisom
+      operationId: addTema
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Vrijednost koja se unosi za ocjenu studentu
+        required: true
+        schema:
+          $ref: '#/definitions/Tema'
+      responses:
+        405:
+          description: Invalid input
+  /fox/teme/{idPredmeta}:
+    get:
+      tags:
+      - teme
+      summary: Pronadji teme za predmet
+      description: Vraća sve teme na navedenom predmetu.
+      operationId: getTeme
+      produces:
+      - application/json
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: id predmeta
+        required: true
+        type: integer
+        format: int64
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Tema'
+        400:
+          description: Invalid ID supplied
+        404:
+          description: Not found
+securityDefinitions:
+  petstore_auth:
+    type: oauth2
+    authorizationUrl: http://petstore.swagger.io/oauth/dialog
+    flow: implicit
+    scopes:
+      write:pets: modify pets in your account
+      read:pets: read your pets
+  api_key:
+    type: apiKey
+    name: api_key
+    in: header
+definitions:
+  PrisustvoPredavanja:
+    type: object
+    properties:
+      idStudenta:
+        type: integer
+        format: int64
+      idPredmeta:
+        type: integer
+        format: int64
+      prisutan:
+        type: boolean
+        default: false
+      brojSedmice:
+        type: integer
+        format: int32
+  PrisustvoVjezbe:
+    type: object
+    properties:
+      idStudenta:
+        type: integer
+        format: int64
+      idPredmeta:
+        type: integer
+        format: int64
+      prisutan:
+        type: boolean
+        default: false
+      brojSedmice:
+        type: integer
+        format: int32
+  PrisustvoTutorijali:
+    type: object
+    properties:
+      idStudenta:
+        type: integer
+        format: int64
+      idPredmeta:
+        type: integer
+        format: int64
+      prisutan:
+        type: boolean
+        default: false
+      brojSedmice:
+        type: integer
+        format: int32
+  BodoviIspit:
+    type: object
+    properties:
+      idStudenta:
+        type: integer
+        format: int64
+      idIspita:
+        type: integer
+        format: int64
+      idPredmeta:
+        type: integer
+        format: int64
+      brojBodova:
+        type: integer
+        format: int32
+  Ocjena:
+    type: object
+    properties:
+      idStudenta:
+        type: integer
+        format: int64
+      idPredmeta:
+        type: integer
+        format: int64
+      ocjena:
+        type: integer
+        format: int32
+  Tema:
+    type: object
+    properties:
+      idPredmeta:
+        type: integer
+        format: int64
+      naziv:
+        type: string
+      opis:
+        type: string

@@ -4,6 +4,12 @@ const app = express();
 const port = /*process.env.port ||*/ 31906;
 const cors = require('cors');
 
+//Swagger
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml');
+app.use('/api-docs',swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 //database connection
 const db = require('./databaseConfig.js');  
 db.connect(function(err) {
