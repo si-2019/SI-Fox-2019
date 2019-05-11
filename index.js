@@ -40,6 +40,32 @@ app.get('/api/fox/tabelaStudenti/ispiti', cors(), (req, res) => {
     res.json(ispiti);
 });
 
+//APIji za početnu stranicu
+
+const predmeti = [
+    {naziv: "Tehnike programiranja"},
+    {naziv: "Numerički algoritmi"},
+    {naziv: "Diskretna matematika"}
+]
+
+const grupe = [
+    {naziv: "Grupa 1"},
+    {naziv: "Grupa 2"},
+    {naziv: "Grupa 3"}
+]
+
+app.get('/api/fox/predmeti/:idKorisnika', cors(), (req, res) => {
+    //'/api/fox/tabelaStudenti?_limit=100'
+    console.log(req.params);
+    res.json(predmeti);
+});
+
+app.get('/api/fox/predmeti/:idPredmeta', cors(), (req, res) => {
+    //'/api/fox/tabelaStudenti?_limit=100'
+    console.log(req.params);
+    res.json(grupe);
+});
+
 
 
 
