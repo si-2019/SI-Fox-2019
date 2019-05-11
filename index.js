@@ -60,7 +60,7 @@ app.get('/api/fox/predmeti/:idKorisnika', cors(), (req, res) => {
     res.json(predmeti);
 });
 
-app.get('/api/fox/predmeti/:idPredmeta', cors(), (req, res) => {
+app.get('/api/fox/grupe/:idPredmeta', cors(), (req, res) => {
     //'/api/fox/tabelaStudenti?_limit=100'
     console.log(req.params);
     res.json(grupe);
