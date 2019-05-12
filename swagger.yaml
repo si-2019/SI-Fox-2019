@@ -1,118 +1,177 @@
----
-swagger: "2.0"
+openapi: 3.0.0
 info:
-  description: |
-    U ovom dokumentu su navedeni API-ji koje nudi modul profesori.
+  title: APIs i mikroservisi modula profesori
+  description: U ovom dokumentu su opisani APIji i mikroservisi koje nudi modul profesori
   version: 1.0.0
-  title: Mikroservisi modula profesori
-host: virtserver.swaggerhub.com
-basePath: /dsabovic1/ProfesoriMikroservisi/1.0.0
+servers:
+- url: /
 tags:
-- name: prisustvo
-  description: Sve vezano za prisustvo
-- name: bodoviIspiti
-  description: Sve vezano za bodove ostvarene na ispitima
-- name: ocjene
-  description: Sve vezano za ocjene
-- name: teme
-  description: Sve vezano za teme završnih radova
-schemes:
-- https
-- http
+- name: prisustvo - Mikroservisi
+  description: Svi mikroservisi vezani za prisustvo
+- name: bodoviIspiti - Mikroservisi
+  description: Svi mikroservisi vezani za bodove ostvarene na ispitima
+- name: ocjene - Mikroservisi
+  description: Svi mikroservisi vezani za ocjene
+- name: teme - Mikroservisi
+  description: Svi mikroservisi vezani za teme završnih radova
+- name: pocetnaStranica - APIs
+  description: Podaci potrebni za prikaz na početnoj sranici
+- name: studenti - APIs
+  description: Podaci potrebni za kreiranje tabele sa studentima
+- name: unosPrisustva - APIs
+  description: Podaci potrebni za prikaz i unos prisustva
+- name: unosTeme - APIs
+  description: Podaci potrebni za prikaz i unos tema
+- name: unosBodovaIspita - APIs
+  description: Podaci vezani za unos bodova ispita
+- name: unosOcjene - APIs
+  description: Podaci vezani za unos ocjene
+- name: obavijesti - APIs
+  description: Podaci vezani za unos obavijesti
+- name: ispiti - APIs
+  description: Podaci vezani za tipove ispita i prijavljene studente.
 paths:
+  /fox/bodoviPrisustvo/{idStudenta}/{idPredmeta}:
+    get:
+      tags:
+      - prisustvo - Mikroservisi
+      summary: Dobavlja bodove studenta ostvarene na prisustvo na željenom predmetu
+      description: |
+        Ovaj endpoint dobavljabroj bodova studenta ostvarenih na prisustvo na predmetu sa id-em idPredmeta.
+      operationId: korisnik
+      parameters:
+      - name: idStudenta
+        in: path
+        description: obavezan parametar id koji označava studenta
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga studenta i predmeta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Korisnik'
+        400:
+          description: pogrešan id
+        404:
+          description: nije pronađen korisnik
   /fox/prisustvoPredavanja:
     post:
       tags:
-      - prisustvo
+      - prisustvo - Mikroservisi
       summary: Upisuje se prisustvo studentu na predavanjima
       operationId: addPrisustvoPredavanja
-      consumes:
-      - application/json
-      produces:
-      - application/json
       parameters:
-      - in: body
-        name: body
+      - name: path
+        in: path
         description: Vrijednost koja se unosi za prisustvo na predavanjima studentu
         required: true
+        style: simple
+        explode: false
         schema:
-          $ref: '#/definitions/PrisustvoPredavanja'
+          type: array
+          items:
+            $ref: '#/components/schemas/M-PrisustvoPredavanja'
       responses:
         405:
           description: Invalid input
   /fox/prisustvoVjezbe:
     post:
       tags:
-      - prisustvo
+      - prisustvo - Mikroservisi
       summary: Upisuje se prisustvo studentu na vjezbama
       operationId: addPrisustvoVjezbe
-      consumes:
-      - application/json
-      produces:
-      - application/json
       parameters:
-      - in: body
-        name: body
+      - name: path
+        in: path
         description: Vrijednost koja se unosi za prisustvo studentu na vjezbama
         required: true
+        style: simple
+        explode: false
         schema:
-          $ref: '#/definitions/PrisustvoVjezbe'
+          $ref: '#/components/schemas/M-PrisustvoVjezbe'
       responses:
         405:
           description: Invalid input
   /fox/prisustvoTutorijali:
     post:
       tags:
-      - prisustvo
+      - prisustvo - Mikroservisi
       summary: Upisuje se prisustvo studentu na tutorijalima
       operationId: addPrisustvoTutorijali
-      consumes:
-      - application/json
-      produces:
-      - application/json
       parameters:
-      - in: body
-        name: body
+      - name: path
+        in: path
         description: Vrijednost koja se unosi za prisustvo studentu na tutorijalima
         required: true
+        style: simple
+        explode: false
         schema:
-          $ref: '#/definitions/PrisustvoTutorijali'
+          $ref: '#/components/schemas/M-PrisustvoTutorijali'
       responses:
         405:
-          description: Invalid input
+          description: Invalid input'
   /fox/prisustvoPredavanja/{idStudenta}/{idPredmeta}/{brojSedmice}:
     get:
       tags:
-      - prisustvo
+      - prisustvo - Mikroservisi
       summary: Pronadji vrijednost prisustva na predavanjima
-      description: Vraća da, ne ili null na prisustvo na predavanjima za odgovarajuću sedmicu, studenta i predmet.
+      description: Vraća da, ne ili null na prisustvo na predavanjima za odgovarajuću
+        sedmicu, studenta i predmet.
       operationId: getPrisustvoPredavanja
-      produces:
-      - application/json
       parameters:
       - name: idStudenta
         in: path
         description: id studenta za kojeg trazimo prisustvo
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       - name: idPredmeta
         in: path
         description: id predmeta za kojeg trazimo prisustvo
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       - name: brojSedmice
         in: path
         description: broj sedmice za koju trazimo prisustvo
         required: true
-        type: integer
-        format: int32
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
       responses:
         200:
           description: successful operation
-          schema:
-            $ref: '#/definitions/PrisustvoPredavanja'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/M-PrisustvoPredavanja'
         400:
           description: Invalid ID supplied
         404:
@@ -120,36 +179,46 @@ paths:
   /fox/prisustvoVjezbe/{idStudenta}/{idPredmeta}/{brojSedmice}:
     get:
       tags:
-      - prisustvo
+      - prisustvo - Mikroservisi
       summary: Pronadji vrijednost prisustva na vjezbama
-      description: Vraća da, ne ili null na prisustvo na vjezbama za odgovarajuću sedmicu, studenta i predmet.
+      description: Vraća da, ne ili null na prisustvo na vjezbama za odgovarajuću
+        sedmicu, studenta i predmet.
       operationId: getPrisustvoVjezbe
-      produces:
-      - application/json
       parameters:
       - name: idStudenta
         in: path
         description: id studenta za kojeg trazimo prisustvo
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       - name: idPredmeta
         in: path
         description: id predmeta za kojeg trazimo prisustvo
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       - name: brojSedmice
         in: path
         description: broj sedmice za koju trazimo prisustvo
         required: true
-        type: integer
-        format: int32
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
       responses:
         200:
           description: successful operation
-          schema:
-            $ref: '#/definitions/PrisustvoPredavanja'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/M-PrisustvoPredavanja'
         400:
           description: Invalid ID supplied
         404:
@@ -157,36 +226,46 @@ paths:
   /fox/prisustvoTutorijali/{idStudenta}/{idPredmeta}/{brojSedmice}:
     get:
       tags:
-      - prisustvo
+      - prisustvo - Mikroservisi
       summary: Pronadji vrijednost prisustva na tutorijalima
-      description: Vraća da, ne ili null na prisustvo na tutorijalima za odgovarajuću sedmicu, studenta i predmet.
+      description: Vraća da, ne ili null na prisustvo na tutorijalima za odgovarajuću
+        sedmicu, studenta i predmet.
       operationId: getPrisustvoTutorijali
-      produces:
-      - application/json
       parameters:
       - name: idStudenta
         in: path
         description: id studenta za kojeg trazimo prisustvo
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       - name: idPredmeta
         in: path
         description: id predmeta za kojeg trazimo prisustvo
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       - name: brojSedmice
         in: path
         description: broj sedmice za koju trazimo prisustvo
         required: true
-        type: integer
-        format: int32
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
       responses:
         200:
           description: successful operation
-          schema:
-            $ref: '#/definitions/PrisustvoPredavanja'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/M-PrisustvoPredavanja'
         400:
           description: Invalid ID supplied
         404:
@@ -194,56 +273,63 @@ paths:
   /fox/bodoviIspit:
     post:
       tags:
-      - bodoviIspiti
+      - bodoviIspiti - Mikroservisi
       summary: Upisuje se broj bodova ostvarenih na odgovarajućem ispitu za studenta
       operationId: addBodoviIspit
-      consumes:
-      - application/json
-      produces:
-      - application/json
       parameters:
-      - in: body
-        name: body
+      - name: path
+        in: path
         description: Vrijednost koja se unosi za broj bodova studentu
         required: true
+        style: simple
+        explode: false
         schema:
-          $ref: '#/definitions/BodoviIspit'
+          $ref: '#/components/schemas/BodoviIspit'
       responses:
         405:
           description: Invalid input
   /fox/bodoviIspit/{idStudenta}/{idPredmeta}/{idIspita}:
     get:
       tags:
-      - bodoviIspiti
+      - bodoviIspiti - Mikroservisi
       summary: Pronadji broj bodova na navedenom ispiu za odgovarajuceg studenta
       description: Vraća broj bodova koje je student ostvario na ispitu.
       operationId: getBrojBodova
-      produces:
-      - application/json
       parameters:
       - name: idStudenta
         in: path
         description: id studenta za kojeg trazimo broj bodova
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       - name: idPredmeta
         in: path
         description: id predmeta
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       - name: idIspita
         in: path
         description: id ispita
         required: true
-        type: integer
-        format: int32
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
       responses:
         200:
           description: successful operation
-          schema:
-            $ref: '#/definitions/BodoviIspit'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BodoviIspit'
         400:
           description: Invalid ID supplied
         404:
@@ -251,50 +337,56 @@ paths:
   /fox/ocjena:
     post:
       tags:
-      - ocjene
+      - ocjene - Mikroservisi
       summary: Upisuje se ocjena studentu
       operationId: addOcjena
-      consumes:
-      - application/json
-      produces:
-      - application/json
       parameters:
-      - in: body
-        name: body
+      - name: path
+        in: path
         description: Vrijednost koja se unosi za ocjenu studentu
         required: true
+        style: simple
+        explode: false
         schema:
-          $ref: '#/definitions/Ocjena'
+          type: array
+          items:
+            $ref: '#/components/schemas/M-Ocjena'
       responses:
         405:
           description: Invalid input
   /fox/ocjena/{idStudenta}/{idPredmeta}:
     get:
       tags:
-      - ocjene
+      - ocjene - Mikroservisi
       summary: Pronadji ocjenu za odgovarajuceg studenta
       description: Vraća ocjenu studenta na navedenom predmetu.
       operationId: getOcjena
-      produces:
-      - application/json
       parameters:
       - name: idStudenta
         in: path
         description: id studenta za kojeg trazimo broj bodova
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       - name: idPredmeta
         in: path
         description: id predmeta
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       responses:
         200:
           description: successful operation
-          schema:
-            $ref: '#/definitions/Ocjena'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/M-Ocjena'
         400:
           description: Invalid ID supplied
         404:
@@ -302,140 +394,1357 @@ paths:
   /fox/novaTema:
     post:
       tags:
-      - teme
+      - teme - Mikroservisi
       summary: Upisuje se nova tema sa opisom
       operationId: addTema
-      consumes:
-      - application/json
-      produces:
-      - application/json
       parameters:
-      - in: body
-        name: body
+      - name: path
+        in: path
         description: Vrijednost koja se unosi za ocjenu studentu
         required: true
+        style: simple
+        explode: false
         schema:
-          $ref: '#/definitions/Tema'
+          $ref: '#/components/schemas/Tema'
       responses:
         405:
           description: Invalid input
   /fox/teme/{idPredmeta}:
     get:
       tags:
-      - teme
+      - teme - Mikroservisi
       summary: Pronadji teme za predmet
       description: Vraća sve teme na navedenom predmetu.
       operationId: getTeme
-      produces:
-      - application/json
       parameters:
       - name: idPredmeta
         in: path
         description: id predmeta
         required: true
-        type: integer
-        format: int64
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
       responses:
         200:
           description: successful operation
-          schema:
-            $ref: '#/definitions/Tema'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tema'
         400:
           description: Invalid ID supplied
         404:
           description: Not found
-securityDefinitions:
-  petstore_auth:
-    type: oauth2
-    authorizationUrl: http://petstore.swagger.io/oauth/dialog
-    flow: implicit
-    scopes:
-      write:pets: modify pets in your account
-      read:pets: read your pets
-  api_key:
-    type: apiKey
-    name: api_key
-    in: header
-definitions:
-  PrisustvoPredavanja:
-    type: object
-    properties:
-      idStudenta:
-        type: integer
-        format: int64
-      idPredmeta:
-        type: integer
-        format: int64
-      prisutan:
-        type: boolean
-        default: false
-      brojSedmice:
-        type: integer
-        format: int32
-  PrisustvoVjezbe:
-    type: object
-    properties:
-      idStudenta:
-        type: integer
-        format: int64
-      idPredmeta:
-        type: integer
-        format: int64
-      prisutan:
-        type: boolean
-        default: false
-      brojSedmice:
-        type: integer
-        format: int32
-  PrisustvoTutorijali:
-    type: object
-    properties:
-      idStudenta:
-        type: integer
-        format: int64
-      idPredmeta:
-        type: integer
-        format: int64
-      prisutan:
-        type: boolean
-        default: false
-      brojSedmice:
-        type: integer
-        format: int32
-  BodoviIspit:
-    type: object
-    properties:
-      idStudenta:
-        type: integer
-        format: int64
-      idIspita:
-        type: integer
-        format: int64
-      idPredmeta:
-        type: integer
-        format: int64
-      brojBodova:
-        type: integer
-        format: int32
-  Ocjena:
-    type: object
-    properties:
-      idStudenta:
-        type: integer
-        format: int64
-      idPredmeta:
-        type: integer
-        format: int64
-      ocjena:
-        type: integer
-        format: int32
-  Tema:
-    type: object
-    properties:
-      idPredmeta:
-        type: integer
-        format: int64
-      naziv:
-        type: string
-      opis:
-        type: string
+  /fox/korisnik/{idKorisnika}:
+    get:
+      tags:
+      - pocetnaStranica - APIs
+      summary: Dobavlja sve podatke o korisniku sa datim id-em
+      description: Ovaj endpoint dobavlja sve podatke o prijavljenom korisniku sa datim id-em. Podaci se koriste za prikaz pozdravne poruke.
+      operationId: korisnik
+      parameters:
+      - name: idKorisnika
+        in: path
+        description: obavezan parametar id koji označava korisnika
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga korisnika
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Korisnik'
+        400:
+          description: pogrešan id
+        404:
+          description: nije pronađen korisnik
+  /fox/predmeti/{idKorisnika}:
+    get:
+      tags:
+      - pocetnaStranica - APIs
+      summary: Dobavlja sve predmete koji su vezani za datog korisnika
+      description: Api dobavlja sve predmete koje drži ulogovani korisnik.
+      operationId: predmeti
+      parameters:
+      - name: idKorisnika
+        in: path
+        description: obavezan parametar id koji označava korisnika
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga predmeta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Predmet'
+        400:
+          description: pogrešan id
+        404:
+          description: nisu pronađeni predmeti
+  /fox/grupe/{idPredmeta}:
+    get:
+      tags:
+      - pocetnaStranica - APIs
+      summary: Dobavlja sve grupe koji su vezani za dati predmet
+      description: "Api dobavlja sve grupe koje postoje na predmetu sa id-em idPredmeta"
+      operationId: grupe
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava korisnika
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga predmeta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GrupaTermina'
+        400:
+          description: pogrešan id
+        404:
+          description: nisu pronađene grupe
+  /fox/tabelaStudenti/{idPredmeta}:
+    get:
+      tags:
+      - studenti - APIs
+      summary: Dobavlja sve podatke o studentima koji su upisani na predmet sa datim
+        id-em
+      description: Api dobavlja sve podatke potrebne za formirnje prikaza tabele Studenti pri čemu kupi info svih studenata na predmetu sa id-em idPredmeta
+      operationId: tabelaStudentiPredmet
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga studenata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Korisnik'
+        400:
+          description: pogrešan id
+        404:
+          description: nisu pronađeni studenti
+  /fox/tabelaStudenti/{idGrupe}:
+    get:
+      tags:
+      - studenti - APIs
+      summary: Dobavlja sve podatke o studentima koji su upisani na predmet i pripadaju
+        grupi sa datim id-em
+      description: Api dobavlja sve podatke potrebne za formirnje prikaza tabele Studenti  pri čemu kupi info svih studenata odabrane grupe sa id-em idGrupe.
+      operationId: tabelaStudentiGrupa
+      parameters:
+      - name: idGrupe
+        in: path
+        description: obavezan parametar id koji označava grupu
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga studenata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Korisnik'
+        400:
+          description: pogrešan id
+        404:
+          description: nisu pronađeni studenti
+  /fox/tabelaStudenti/ispiti/{idPredmeta}:
+    get:
+      tags:
+      - studenti - APIs
+      summary: Dobavlja sve podatke o ispitima vezanim za predmet sa datim id-em
+      description: Api dobavlja sve ispite održane na odabranom predmetu. Dobavlja nazive ispita.
+      operationId: tabelaStudentiIspiti
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga ispita
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ispit'
+        400:
+          description: pogrešan id
+        404:
+          description: nisu pronađeni ispiti
+  /fox/tabelaStudenti/ispitiRezultati/{idPredmeta}:
+    get:
+      tags:
+      - studenti - APIs
+      summary: Dobavlja sve podatke o rezultatima ispita vezanim za predmet sa datim
+        id-em
+      description: Api dobavlja sve rezultate ispita održanih na odabranom predmetu.
+      operationId: tabelaStudentiIspitiRezultati
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga rezultata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IspitRezultati'
+        400:
+          description: pogrešan id
+        404:
+          description: nisu pronađeni rezultati
+  /fox/unosPodataka/unosPrisustva/studenti/{idPredmeta}:
+    get:
+      tags:
+      - unosPrisustva - APIs
+      summary: Dobavlja sve podatke o studentima na predmetu sa datim id-em
+      description: Api dobavlja sve studente koji pripadaju predmetu sa poslanim id-em.
+      operationId: unosPrisustvaStudentiPredmet
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga studenata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Korisnik'
+        400:
+          description: pogrešan id
+        404:
+          description: nisu pronađeni studenti
+  /fox/unosPodataka/unosPrisustva/predavanja/{idPredmeta}:
+    get:
+      tags:
+      - unosPrisustva - APIs
+      summary: Dobavlja sve podatke o prisustvu studenata predavanjima na predmetu
+        sa datim id-em
+      description: Dobavlja sve podatke o prisustvu studenata predavanjima na predmetu sa datim id-em
+      operationId: unosPrisustvaPredavanjePredmet
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga prisustva
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrisustvoPredavanja'
+        400:
+          description: pogrešan id
+        404:
+          description: nije pronađeno prisustvo
+  /fox/unosPodataka/unosPrisustva/vjezbe/{idPredmeta}:
+    get:
+      tags:
+      - unosPrisustva - APIs
+      summary: Dobavlja sve podatke o prisustvu studenata vjezbama na predmetu sa
+        datim id-em
+      description: Dobavlja sve podatke o prisustvu studenata vjezbama na predmetu sa datim id-em
+      operationId: unosPrisustvaVjezbePredmet
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga prisustva
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrisustvoVjezbe'
+        400:
+          description: pogrešan id
+        404:
+          description: nije pronađeno prisustvo
+  /fox/unosPodataka/unosPrisustva/tutorijali/{idPredmeta}:
+    get:
+      tags:
+      - unosPrisustva - APIs
+      summary: Dobavlja sve podatke o prisustvu studenata tutorijalima na predmetu
+        sa datim id-em
+      description: Dobavlja sve podatke o prisustvu studenata tutorijalima na predmetu sa datim id-em
+      operationId: unosPrisustvaTutorijaliPredmet
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga prisustva
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrisustvoTutorijali'
+        400:
+          description: pogrešan id
+        404:
+          description: nije pronađeno prisustvo
+  /fox/unosPodataka/unosPrisustva/studenti/{idGrupe}:
+    get:
+      tags:
+      - unosPrisustva - APIs
+      summary: Dobavlja sve podatke o studentima na predmetu sa datim id-em
+      description: Api dobavlja sve studente koji pripadaju grupi sa poslanim id-em.
+      operationId: unosPrisustvaGrupa
+      parameters:
+      - name: idGrupe
+        in: path
+        description: obavezan parametar id koji označava grupu
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga studenata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Korisnik'
+        400:
+          description: pogrešan id
+        404:
+          description: nisu pronađeni studenti
+  /fox/unosPodataka/unosPrisustva/predavanja/{idGrupe}:
+    get:
+      tags:
+      - unosPrisustva - APIs
+      summary: Dobavlja sve podatke o prisustvu studenata predavanjima u grupi sa
+        datim id-em
+      description: Dobavlja sve podatke o prisustvu studenata predavanjima na predmetu sa datim id-em
+      operationId: unosPrisustvaPredavanjeGrupa
+      parameters:
+      - name: idGrupe
+        in: path
+        description: obavezan parametar id koji označava grupu
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga prisustva
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrisustvoPredavanja'
+        400:
+          description: pogrešan id
+        404:
+          description: nije pronađeno prisustvo
+  /fox/unosPodataka/unosPrisustva/vjezbe/{idGrupe}:
+    get:
+      tags:
+      - unosPrisustva - APIs
+      summary: Dobavlja sve podatke o prisustvu studenata vjezbama u grupi sa datim
+        id-em
+      description: Dobavlja sve podatke o prisustvu studenata vjezbama na predmetu sa datim id-em
+      operationId: unosPrisustvaVjezbeGrupa
+      parameters:
+      - name: idGrupe
+        in: path
+        description: obavezan parametar id koji označava grupu
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga prisustva
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrisustvoVjezbe'
+        400:
+          description: pogrešan id
+        404:
+          description: nije pronađeno prisustvo
+  /fox/unosPodataka/unosPrisustva/tutorijali/{idGrupe}:
+    get:
+      tags:
+      - unosPrisustva - APIs
+      summary: Dobavlja sve podatke o prisustvu studenata tutorijalima u grupi sa
+        datim id-em
+      description: Dobavlja sve podatke o prisustvu studenata tutorijalima na predmetu sa datim id-em
+      operationId: unosPrisustvaTutorijaliGrupa
+      parameters:
+      - name: idGrupe
+        in: path
+        description: obavezan parametar id koji označava grupu
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga prisustva
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrisustvoTutorijali'
+        400:
+          description: pogrešan id
+        404:
+          description: nije pronađeno prisustvo
+  /fox/unosPodataka/unosPrisustva/predavanje:
+    post:
+      tags:
+      - unosPrisustva - APIs
+      summary: upisuje prisustvo za predavanje
+      description: Šalje podatke o prisustvu predavanjima i to se upisuje u bazu.
+      operationId: unosPrisustvaPredavanje
+      requestBody:
+        description: prisustvo predavanju
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PrisustvoPredavanja'
+      responses:
+        201:
+          description: prisustvo dodano
+        400:
+          description: invalid input, object invalid
+  /fox/unosPodataka/unosPrisustva/vjezbe:
+    post:
+      tags:
+      - unosPrisustva - APIs
+      summary: upisuje prisustvo za vjezbe
+      description: Šalje podatke o prisustvu vjezbama i to se upisuje u bazu.
+      operationId: unosPrisustvaVjezbe
+      requestBody:
+        description: prisustvo vjezbama
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PrisustvoVjezbe'
+      responses:
+        201:
+          description: prisustvo dodano
+        400:
+          description: invalid input, object invalid
+  /fox/unosPodataka/unosPrisustva/tutorijali/:
+    post:
+      tags:
+      - unosPrisustva - APIs
+      summary: upisuje prisustvo za tutorijale
+      description: Šalje podatke o prisustvu tutorijalima i to se upisuje u bazu.
+      operationId: unosPrisustvaTutorijali
+      requestBody:
+        description: prisustvo tutorijalima
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PrisustvoTutorijali'
+      responses:
+        201:
+          description: prisustvo dodano
+        400:
+          description: invalid input, object invalid
+  /fox/unosPodataka/unosTeme/{idPredmeta}:
+    get:
+      tags:
+      - unosTeme - APIs
+      summary: Dobavlja podatke o temama na datom predmetu
+      description: Api dobavlja sve trenutno ponudjene teme koje pripadaju predmetu sa poslanim id-em.
+      operationId: unosTeme
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: uspješna pretraga tema
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TemeZavrsnih'
+        400:
+          description: pogrešan id
+        404:
+          description: nisu pronađene teme
+  /fox/unosPodataka/unosTeme/:
+    post:
+      tags:
+      - unosTeme - APIs
+      summary: šalje podatke o unesenoj temi
+      description: Šalje podatke o unesenoj temi i to se upisuje u bazu.
+      operationId: unosTemePost
+      requestBody:
+        description: teme za zavrsne radove
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemeZavrsnih'
+      responses:
+        201:
+          description: tema dodana
+        400:
+          description: invalid input, object invalid
+  /fox/unosPodataka/unosBodovaIspita:
+    get:
+      tags:
+      - unosBodovaIspita - APIs
+      summary: 'Dobavljaju se svi podaci vezani za tip ispita i datuma odrzavanja
+        ispita nakon odabira određenog predmeta '
+      description: Api dobavlje sve podatke vezane za tip ispita i datuma odrzavanja ispita nakon odabira određenog predmeta sa id-em idPredmeta.
+      operationId: predmet
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesno prikupljanje svih ispita i datuma
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IspitRezultati'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesna pretraga svih ispita i datuma
+  /fox/unosPodataka/UnosBodovaIspita/student/{idStudenta}:
+    get:
+      tags:
+      - unosBodovaIspita - APIs
+      summary: Dobavljaju se svi podaci vezani za studenta (ime, prezime i indeks)
+        za unos bodova ispita
+      description: Api dobavlja podatke studenta tačnije  nakon unesenog indeksa vrsi pretragu i vraca ime i prezime tog studenta sa id-em.
+      operationId: ispit
+      parameters:
+      - name: idStudenta
+        in: path
+        description: obavezan parametar id koji označava studenta
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesna pretraga svih studenata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IspitRezultati'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesna pretraga svih studenata
+  /fox/unosPodataka/studentbodovi/{idStudenta}:
+    post:
+      tags:
+      - unosBodovaIspita - APIs
+      summary: Unose se bodovi ispita nakon pretrage trazenog studenta
+      description: Api vrsi unos bodova studenta nakon sto smo proslijedili broj bodova koristeći trazeni id.
+      operationId: bodovi
+      parameters:
+      - name: idStudenta
+        in: path
+        description: obavezan parametar id koji označava studenta
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesna unos bodova studenta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IspitRezultati'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesan unos bodova
+  /fox/unosPodataka/unosBodovaispita/pregled/{idStudenta}:
+    get:
+      tags:
+      - unosBodovaIspita - APIs
+      summary: Dobavljaju se svi uneseni podaci o studentu i poruka o uspjesnosti
+        unosa bodova
+      description: Api dobavlja sve unesene podatke o studentu tačnije, ime prezime, indeks i broj bodova te daje poruku o uspjesnosti unosa koristeći idStudenta.
+      operationId: pregledstudenta
+      parameters:
+      - name: idStudenta
+        in: path
+        description: obavezan parametar id koji označava studenta
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesan unos svih podataka
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pregled'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesan unos svih podataka
+  /fox/unosPodataka/unosOcjene/{idStudenta}:
+    get:
+      tags:
+      - unosOcjene - APIs
+      summary: Dobavljaju se svi podaci vezani za studenta (ime, prezime i indeks)
+        za unos ocjene
+      description: Api dobavlja podatke studenta tačnije  nakon unesenog indeksa vrsi pretragu i vraca ime i prezime tog studenta sa id-em.
+      operationId: ocjenaStudenta
+      parameters:
+      - name: idStudenta
+        in: path
+        description: obavezan parametar id koji označava studenta
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesna pretraga svih studenata
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Student'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesna pretraga svih studenata
+  /fox/unosPodataka/unosOcjene:
+    post:
+      tags:
+      - unosOcjene - APIs
+      summary: Unosi se ocjena nakon pretrage trazenog studenta
+      description: Api vrsi spremanje unesene ocjene studenta koristeci navedeni id.
+      operationId: ocjenaPretrazenogStudenta
+      parameters:
+      - name: idStudenta
+        in: path
+        description: obavezan parametar id koji označava studenta
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesna unos ocjene studenta
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ocjena'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesan unos ocjene
+  /fox/unosPodataka/unosOcjene/pregled/{idStudenta}:
+    get:
+      tags:
+      - unosOcjene - APIs
+      summary: Dobavljaju se svi uneseni podaci o studentu i poruka o uspjesnosti
+        unosa ocjene
+      description: Api dobavlja sve unesene podatke o studentu tačnije, ime prezime, indeks i broj bodova te daje poruku o uspjesnosti unosa ocjene  koristeći idStudenta.
+      operationId: pregledstudentaocjene
+      parameters:
+      - name: idStudenta
+        in: path
+        description: obavezan parametar id koji označava studenta
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesan unos svih podataka
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pregled'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesan unos svih podataka
+  /fox/ispiti:
+    get:
+      tags:
+      - ispiti - APIs
+      summary: Dobavljaju se svi podaci za formiranje tabele ispita
+      description: Api dobavlja sve potrebne podatke da se može formirati tabela ispita koristeći idPredmeta.
+      operationId: tabelaIspita
+      parameters:
+      - name: idPredmeta
+        in: path
+        description: obavezan parametar id koji označava predmet
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesno prikupljanje svih podataka
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ispit'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesno prikupljanje svih podataka
+  /fox/ispiti/studenti/{idIspita}:
+    get:
+      tags:
+      - ispiti - APIs
+      summary: Dobavljaju se svi podaci o prolaznosti studenata koji su pristupili
+        ispitu
+      description: Api dobavlja podatke o prolaznosti studenata koji su pristupili ispitu koristeći idIspita.
+      operationId: tabelaIspitaStudenata
+      parameters:
+      - name: idIspita
+        in: path
+        description: obavezan parametar id koji označava ispit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesno prikupljanje svih podataka
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ispit'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesno prikupljanje svih podataka
+  /fox/ispiti/studenti/zahtjevi/{idIspita}:
+    post:
+      tags:
+      - ispiti - APIs
+      summary: Slanje zahtjeva za kreiranje novog ispita
+      description: Api omogucava kreiranje novog ispita tako što dozvoljava korisniku da pošalje zahtjev da se kreira novi ispit.
+      operationId: zahtjeviIspita
+      parameters:
+      - name: idIspita
+        in: path
+        description: obavezan parametar id koji označava ispit
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesno slanje zahtjeva za novi ispita
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ispit'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesno podnosenje zahtjeva
+  /fox/obavijesti:
+    post:
+      tags:
+      - obavijesti - APIs
+      summary: Slanje obavijesti za sve studente
+      description: Api za slanje unesene obavijesti koristeci navedeni id idObavijesti.
+      operationId: obavijestprofesora
+      parameters:
+      - name: idObavijesti
+        in: path
+        description: obavezan parametar id koji označava obavijest
+        required: true
+        style: simple
+        explode: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Uspjesno slanje obavijesti
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Obavijestitabela'
+        400:
+          description: pogrešan id
+        404:
+          description: Neuspjesno slanje obavijesti
+components:
+  schemas:
+    M-PrisustvoPredavanja:
+      type: object
+      properties:
+        idStudenta:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        prisutan:
+          type: boolean
+          default: false
+        brojSedmice:
+          type: integer
+          format: int32
+    M-PrisustvoVjezbe:
+      type: object
+      properties:
+        idStudenta:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        prisutan:
+          type: boolean
+          default: false
+        brojSedmice:
+          type: integer
+          format: int32
+    M-PrisustvoTutorijali:
+      type: object
+      properties:
+        idStudenta:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        prisutan:
+          type: boolean
+          default: false
+        brojSedmice:
+          type: integer
+          format: int32
+    BodoviIspit:
+      type: object
+      properties:
+        idStudenta:
+          type: integer
+          format: int64
+        idIspita:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        brojBodova:
+          type: integer
+          format: int32
+    M-Ocjena:
+      type: object
+      properties:
+        idStudenta:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        ocjena:
+          type: integer
+          format: int32
+    Tema:
+      type: object
+      properties:
+        idPredmeta:
+          type: integer
+          format: int64
+        naziv:
+          type: string
+        opis:
+          type: string
+    Korisnik:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        adresa:
+          type: string
+        ciklus:
+          type: string
+        datumRodjenja:
+          type: string
+          format: date-time
+        drzavljanstvo:
+          type: string
+        email:
+          type: string
+        fotografija:
+          type: string
+        idOdsjek:
+          type: integer
+          format: int64
+        idUloga:
+          type: integer
+          format: int64
+        ime:
+          type: string
+        imePrezimeMajke:
+          type: string
+        imePrezimeOca:
+          type: string
+        indeks:
+          type: integer
+          format: int64
+        JMBG:
+          type: string
+        kanton:
+          type: string
+        linkedin:
+          type: string
+        mjestoRodjenja:
+          type: string
+        password:
+          type: string
+        prezime:
+          type: string
+        semestar:
+          type: string
+        spol:
+          type: integer
+        telefon:
+          type: string
+        titula:
+          type: string
+        username:
+          type: string
+        website:
+          type: string
+    Predmet:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        brojPredavanja:
+          type: integer
+          format: int32
+        brojVjezbi:
+          type: integer
+          format: int32
+        ects:
+          type: integer
+          format: int32
+        idAsistent:
+          type: integer
+          format: int64
+        idProfesor:
+          type: integer
+          format: int64
+        naziv:
+          type: string
+        opis:
+          type: string
+    GrupaTermina:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        danUSedmici:
+          type: integer
+          format: int32
+        idKabinet:
+          type: integer
+          format: int64
+        idPredavac:
+          type: integer
+          format: int64
+        idPredmet:
+          type: integer
+          format: int64
+        naziv:
+          type: string
+        rokPrijave:
+          type: string
+          format: date-time
+        trajanje:
+          type: integer
+          format: int32
+        vrijeme:
+          type: string
+    Ispit:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        brojStudenata:
+          type: integer
+        idPredmet:
+          type: integer
+          format: int64
+        idProfesor:
+          type: integer
+          format: int64
+        kapacitet:
+          type: integer
+        napomena:
+          type: string
+        rokPrijave:
+          type: string
+          format: date-time
+        sala:
+          type: integer
+        termin:
+          type: string
+        tipIspita:
+          type: string
+        vrijemeTrajanja:
+          type: integer
+    IspitRezultati:
+      required:
+      - datum
+      - idIspit
+      - idPredmeta
+      - idStudent
+      type: object
+      properties:
+        idIspit:
+          type: integer
+          format: int64
+        idStudent:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        bodovi:
+          type: integer
+        datum:
+          type: string
+    PrisustvoPredavanja:
+      type: object
+      properties:
+        idStudenta:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        prisutan:
+          type: boolean
+          default: false
+        brojSedmice:
+          type: integer
+    PrisustvoVjezbe:
+      type: object
+      properties:
+        idStudenta:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        prisutan:
+          type: boolean
+          default: false
+        brojSedmice:
+          type: integer
+    PrisustvoTutorijali:
+      type: object
+      properties:
+        idStudenta:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        prisutan:
+          type: boolean
+          default: false
+        brojSedmice:
+          type: integer
+    TemeZavrsnih:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        idProfesora:
+          type: integer
+          format: int64
+        naziv:
+          type: string
+    Student:
+      required:
+      - idPredmeta
+      - idStudenta
+      - indeks
+      type: object
+      properties:
+        idStudenta:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        indeks:
+          type: integer
+          format: int32
+    Pregled:
+      required:
+      - brojbodova
+      - idPredmeta
+      - idStudenta
+      - indeks
+      - poruka
+      type: object
+      properties:
+        idStudenta:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        indeks:
+          type: integer
+          format: int32
+        brojbodova:
+          type: integer
+          format: int32
+        poruka:
+          type: boolean
+    Ocjena:
+      required:
+      - idOcjene
+      - idPredmeta
+      - idStudenta
+      - indeks
+      type: object
+      properties:
+        idOcjene:
+          type: integer
+          format: int64
+        idStudenta:
+          type: integer
+          format: int64
+        idPredmeta:
+          type: integer
+          format: int64
+        indeks:
+          type: integer
+          format: int32
+        ocjena:
+          type: integer
+          format: int32
+    Obavijestitabela:
+      required:
+      - idObavijesti
+      - obavijest
+      type: object
+      properties:
+        idObavijesti:
+          type: integer
+          format: int64
+        obavijest:
+          type: string

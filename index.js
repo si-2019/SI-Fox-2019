@@ -1,7 +1,10 @@
 const express = require('express');
+const dotenv = require('dotenv');  // definisanje env varijabli
+dotenv.config();                   // postavljanje configa 
+
 // init express
 const app = express();
-const port = /*process.env.port ||*/ 31906;
+const port = process.env.port || 31906;
 const cors = require('cors');
 
 //Swagger
@@ -11,12 +14,17 @@ const swaggerDocument = YAML.load('./swagger.yaml');
 app.use('/api-docs',swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //database connection
-const db = require('./databaseConfig.js');  
+/*const db = require('./databaseConfig.js');  
 db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
-});
-   
+});*/
+//database connection sa sequelize
+const db = require ('./models/db.js');
+db.sequelize.sync()
+    .then(() => console.log("Connected!"))
+    .catch((err)=> console.log("Neuspjesno povezivanje"))
+    
 
 //npm run dev
 app.get('/', (req, res) => res.send('Hello World from FOX!'));
