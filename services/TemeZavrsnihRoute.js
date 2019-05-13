@@ -26,15 +26,16 @@ temeZavrsnihRouter.post('/novaTema', (req, res) => {
     if (!ispravniParametri) res.send(JSON.stringify({
         message: 'Neispravni parametri unutar body-a! Ocekivani format formatu [naziv, opis, idPredmeta, idProfesora]'
     }))
-
-    temeZavrsnihUtils.addNovaTema(postBody, (err,tema)=> {
-        if (err) res.send(JSON.stringify({
-            message: "Neispravni id-evi!"
-        }));
-        else res.send(JSON.stringify({
-            message: "Uspjesno dodana nova tema!"
-        }));
-    });
+    else {
+        temeZavrsnihUtils.addNovaTema(postBody, (err,tema)=> {
+            if (err) res.send(JSON.stringify({
+                message: "Neispravni id-evi!"
+            }));
+            else res.send(JSON.stringify({
+                message: "Uspjesno dodana nova tema!"
+            }));
+        });
+    } 
 });
 
 temeZavrsnihRouter.delete('/izbrisiTemu/:idTeme', (req,res) => {
@@ -49,6 +50,30 @@ temeZavrsnihRouter.delete('/izbrisiTemu/:idTeme', (req,res) => {
             message: "Uspjesno obrisana tema!"
         }));
     });
+});
+
+temeZavrsnihRouter.put('/izmjeniTemu/:idTeme', (req,res) => {
+    let idTeme = req.params.idTeme;
+    let postBody = req.body;
+    console.log(postBody);
+    res.setHeader('Content-Type', 'application/json');
+    
+    let ispravniParametri = temeZavrsnihUtils.provjeraParametaraUpdateTema(postBody);
+    if (!ispravniParametri) 
+        res.send(JSON.stringify({
+            message: 'Neispravni parametri unutar body-a! Ocekivani format formatu [naziv, opis]'
+        }));
+    else {
+        temeZavrsnihUtils.updateTemaZavrsnih(idTeme, postBody, (err, tema) => {
+            //console.log(tema);
+            if (err) res.send(JSON.stringify({
+                message: "Neispravan id teme!"
+            }));
+            else res.send(JSON.stringify({
+                message: "Uspjesno azurirana tema!"
+            }));
+        });
+    }
 });
 
 module.exports = temeZavrsnihRouter;

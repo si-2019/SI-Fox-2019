@@ -31,7 +31,7 @@ const deleteTemaZavrsnih = (id, callback) => {
 const updateTemaZavrsnih = (id, reqBody, callback) => {
     db.TemeZavrsnih.findOne({
         where: {id: id}
-    }).then((tema) => {
+    }).then((tema) => { //Ne detektuje gresku :()
         if(!tema) callback(true); //Greska - ne postoji
         else {
             //Mijenjamo
@@ -43,12 +43,12 @@ const updateTemaZavrsnih = (id, reqBody, callback) => {
                     id: id
                 }
             });
-            callback(null);
+            callback(null, tema);
         };
     })
 }
 
-const provjeraParametaraAUpdateTema = (postBody) => {
+const provjeraParametaraUpdateTema = (postBody) => {
     if(!postBody['naziv'] || !postBody['opis']) return false;
     return true;
 }
@@ -99,5 +99,5 @@ module.exports = {
     provjeraParametaraAddNovaTema,
     deleteTemaZavrsnih,
     updateTemaZavrsnih,
-    provjeraParametaraAUpdateTema 
+    provjeraParametaraUpdateTema 
 }
