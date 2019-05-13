@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const dotenv = require('dotenv');  // definisanje env varijabli
 dotenv.config();                   // postavljanje configa 
 
@@ -6,6 +7,9 @@ dotenv.config();                   // postavljanje configa
 const app = express();
 const port = process.env.port || 31906;
 const cors = require('cors');
+
+//Body parser
+app.use(bodyParser.json());
 
 //Swagger
 const swaggerUi = require('swagger-ui-express');
