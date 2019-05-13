@@ -3,16 +3,18 @@ const temeZavrsnihRouter = express.Router();
 
 const temeZavrsnihUtils = require('../utils/temeZavrsnihUtils');
 
-temeZavrsnihRouter.get('/fox/teme/:idPredmeta', (req, res)=> {
+//Get teme zavrsnih na predmetu
+temeZavrsnihRouter.get('/:idPredmeta', (req, res)=> {
     let idPredmeta = req.params.idPredmeta;
-    temeZavrsnihUtils.getTemeZavrsnih(idPredmeta, (err)=> {
+    console.log(idPredmeta);
+    res.setHeader('Content-Type', 'application/json');
+
+    temeZavrsnihUtils.getTemeZavrsnih(idPredmeta, (err, teme)=> {
         if (err) res.send(JSON.stringify( {
             message: 'Greska! Ne postoji predmet sa id-em idPredmeta.',
             err
         }));
-        else res.send(JSON.stringify({
-            message: 'Uspjesno procitane teme zavrsnih radova.'
-        }));
+        else res.send(teme);
     });
 });
 

@@ -19,6 +19,7 @@ db.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
 });*/
+
 //database connection sa sequelize
 const db = require ('./models/db.js');
 db.sequelize.sync()
@@ -30,7 +31,9 @@ db.sequelize.sync()
 app.get('/', (req, res) => res.send('Hello World from FOX!'));
 
 //---------------Mikroservisi--------------------------------------------------------------------
-
+const TemeZavrsnihRouter = require('./services/TemeZavrsnihRoute');
+//Definisanje rute za Teme Zavrsnih
+app.use('/fox/teme', TemeZavrsnihRouter);
 
 
 //---------------APIs--------------------------------------------------------------------
