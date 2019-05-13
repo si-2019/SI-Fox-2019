@@ -11,6 +11,48 @@ const getTemeZavrsnih = (idPredmeta, callback) => {
     });
 }
 
+const deleteTemaZavrsnih = (id, callback) => {
+    db.TemeZavrsnih.findOne({
+        where: {id: id}
+    }).then((tema) => {
+        if(!tema) callback(true); //Greska - ne postoji
+        else {
+            //Brisemo
+            db.TemeZavrsnih.destroy({
+                where: {
+                    id: id
+                }
+            });
+            callback(null);
+        };
+    });
+}
+
+const updateTemaZavrsnih = (id, reqBody, callback) => {
+    db.TemeZavrsnih.findOne({
+        where: {id: id}
+    }).then((tema) => {
+        if(!tema) callback(true); //Greska - ne postoji
+        else {
+            //Mijenjamo
+            db.TemeZavrsnih.update({
+                naziv: reqBody['naziv'],
+                opis: reqBody['opis']             
+            }, {
+                where: {
+                    id: id
+                }
+            });
+            callback(null);
+        };
+    })
+}
+
+const provjeraParametaraAUpdateTema = (postBody) => {
+    if(!postBody['naziv'] || !postBody['opis']) return false;
+    return true;
+}
+
 const addNovaTema = (postBody, callback) => {
     let novaTema = {
         naziv: postBody['naziv'],
@@ -49,8 +91,13 @@ const provjeraParametaraAddNovaTema = (postBody) => {
     return true;
 }
 
+
+
 module.exports = {
     getTemeZavrsnih,
     addNovaTema,
-    provjeraParametaraAddNovaTema
+    provjeraParametaraAddNovaTema,
+    deleteTemaZavrsnih,
+    updateTemaZavrsnih,
+    provjeraParametaraAUpdateTema 
 }

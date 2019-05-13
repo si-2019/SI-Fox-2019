@@ -34,7 +34,21 @@ temeZavrsnihRouter.post('/novaTema', (req, res) => {
         else res.send(JSON.stringify({
             message: "Uspjesno dodana nova tema!"
         }));
-    })
-})
+    });
+});
+
+temeZavrsnihRouter.delete('/izbrisiTemu/:idTeme', (req,res) => {
+    let idTeme = req.params.idTeme;
+    res.setHeader('Content-Type', 'application/json');
+
+    temeZavrsnihUtils.deleteTemaZavrsnih(idTeme, (err) => {
+        if (err) res.send(JSON.stringify({
+            message: "Neispravan id teme!"
+        }));
+        else res.send(JSON.stringify({
+            message: "Uspjesno obrisana tema!"
+        }));
+    });
+});
 
 module.exports = temeZavrsnihRouter;
