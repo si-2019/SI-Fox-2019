@@ -17,4 +17,17 @@ zahtjeviZavrsniRouter.put('/odobri/:idTeme', (req,res) => {
 
 });
 
+zahtjeviZavrsniRouter.get('/zahtjevi/:idProfesora', (req,res)=> {
+    let idProfesora = req.params.idProfesora;
+    res.setHeader('Content-Type', 'application/json');
+
+    zahtjeviZavrsniUtils.getZahtjeviZavrsni(idProfesora, (err, zahtjevi) => {
+        if (err) res.send(JSON.stringify( {
+            message: 'Greska!',
+            err
+        }));
+        else res.send(zahtjevi);
+    })
+})
+
 module.exports = zahtjeviZavrsniRouter;

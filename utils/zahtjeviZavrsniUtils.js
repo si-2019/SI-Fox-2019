@@ -19,8 +19,16 @@ const odobriZahtjeviZavrsni = (idTeme, callback) => {
     });
 }
 
+const getZahtjeviZavrsni = (idProfesora, callback) => {
+    db.ZahtjeviZavrsni.findAll({
+        where: {idProfesor: idProfesora}
+    }).then((zahtjevi) => {
+        callback(null, zahtjevi);
+    });
+}
+
 module.exports = {
     odobriZahtjeviZavrsni,
-    //getZahtjeviZavrsni,
+    getZahtjeviZavrsni,
     //addZahtjeviZavrsni
 }
