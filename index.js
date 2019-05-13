@@ -38,6 +38,8 @@ app.get('/', (req, res) => res.send('Hello World from FOX!'));
 const TemeZavrsnihRouter = require('./services/TemeZavrsnihRoute');
 //Definisanje rute za Teme Zavrsnih
 app.use('/fox/teme', TemeZavrsnihRouter);
+const ZahtjeviZavrsniRouter = require('./services/ZahtjeviZavrsniRoute');
+app.use('/fox/teme', ZahtjeviZavrsniRouter);
 
 
 //---------------APIs--------------------------------------------------------------------
