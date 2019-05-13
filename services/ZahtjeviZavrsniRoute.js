@@ -48,6 +48,22 @@ zahtjeviZavrsniRouter.post('/dodajZahtjev', (req,res) => {
             }));
         });
     } 
-})
+});
+
+zahtjeviZavrsniRouter.delete('/izbrisiZahtjev/:idTeme', (req, res) => {
+    let idTeme = req.params.idTeme;
+    res.setHeader('Content-Type', 'application/json');
+
+    zahtjeviZavrsniUtils.obrisiZahtjev(idTeme, (err)=> {
+        if (err) res.send(JSON.stringify({
+            message: "Neispravan id teme!"
+        }));
+        else res.send(JSON.stringify({
+            message: "Uspjesno obrisan zahtjev!"
+        }));
+    });
+});
+
+
 
 module.exports = zahtjeviZavrsniRouter;

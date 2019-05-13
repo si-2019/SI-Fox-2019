@@ -72,9 +72,28 @@ const dodajZahtjev = (postBody, callback) => {
     })
 }
 
+const obrisiZahtjev = (idTeme, callback) => {
+    db.ZahtjeviZavrsni.findOne({
+        where: {idTema: idTeme}
+    }).then((zahtjev) => {
+        if(!zahtjev) callback(true); //Greska - ne postoji
+        else {
+            //Brisemo
+            db.ZahtjeviZavrsni.destroy({
+                where: {
+                    idTema: idTeme
+                }
+            });
+            callback(null);
+        };
+    });
+}
+
+
 module.exports = {
     odobriZahtjeviZavrsni,
     getZahtjeviZavrsni,
     provjeraParametaraDodajZahtjev,
-    dodajZahtjev
+    dodajZahtjev, 
+    obrisiZahtjev
 }
