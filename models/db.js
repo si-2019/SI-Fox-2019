@@ -16,5 +16,7 @@ db.sequelize = sequelize;
 // importovanje modela
 db.Korisnik = sequelize.import(__dirname + '/Korisnik.js');
 db.Predmet = sequelize.import(__dirname + '/Predmet.js');
+db.TemeZavrsnih = sequelize.import(__dirname + '/TemeZavrsnih.js');
+db.ZahtjeviZavrsni = sequelize.import(__dirname + '/ZahtjeviZavrsni.js');
 
 module.exports = db;
