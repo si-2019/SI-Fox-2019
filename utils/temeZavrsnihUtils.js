@@ -6,8 +6,9 @@ const getTemeZavrsnih = (idPredmeta, callback) => {
         where: {idPredmeta : idPredmeta},
         attributes: ['id','naziv', 'opis']  
     }).then((teme) => {
+        if (!teme || teme.length==0) callback(true);
+        else callback(null, teme);
         //console.log(teme);
-        callback(null, teme);
     });
 }
 
@@ -15,7 +16,7 @@ const deleteTemaZavrsnih = (id, callback) => {
     db.TemeZavrsnih.findOne({
         where: {id: id}
     }).then((tema) => {
-        if(!tema) callback(true); //Greska - ne postoji
+        if(!tema || tema.length==0) callback(true); //Greska - ne postoji
         else {
             //Brisemo
             db.TemeZavrsnih.destroy({
@@ -32,7 +33,7 @@ const updateTemaZavrsnih = (id, reqBody, callback) => {
     db.TemeZavrsnih.findOne({
         where: {id: id}
     }).then((tema) => { //Ne detektuje gresku :()
-        if(!tema) callback(true); //Greska - ne postoji
+        if(!tema || tema.length==0) callback(true); //Greska - ne postoji
         else {
             //Mijenjamo
             db.TemeZavrsnih.update({
@@ -66,7 +67,7 @@ const addNovaTema = (postBody, callback) => {
             id: postBody['idPredmeta'] 
         }
     }).then((predmet) => {
-        if (!predmet) callback(true); //Greska
+        if (!predmet || predmet.length==0) callback(true); //Greska
         else {
             db.Korisnik.findOne({
                 where: {

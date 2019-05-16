@@ -4,7 +4,7 @@ const odobriZahtjeviZavrsni = (idTeme, callback) => {
     db.ZahtjeviZavrsni.findOne({
         where: {idTema: idTeme}
     }).then((tema) => {
-        if(!tema) callback(true); //Greska - ne postoji
+        if(!tema || tema.length==0) callback(true); //Greska - ne postoji
         else {
             //Mijenjamo
             db.ZahtjeviZavrsni.update({
@@ -45,7 +45,7 @@ const dodajZahtjev = (postBody, callback) => {
             id: postBody['idTema'] 
         }
     }).then((tema) => {
-        if (!tema) callback(true); //Greska
+        if (!tema || tema.length) callback(true); //Greska
         else {
             db.Korisnik.findOne({
                 where: {
@@ -76,7 +76,7 @@ const obrisiZahtjev = (idTeme, callback) => {
     db.ZahtjeviZavrsni.findOne({
         where: {idTema: idTeme}
     }).then((zahtjev) => {
-        if(!zahtjev) callback(true); //Greska - ne postoji
+        if(!zahtjev || zahtjev.length) callback(true); //Greska - ne postoji
         else {
             //Brisemo
             db.ZahtjeviZavrsni.destroy({
