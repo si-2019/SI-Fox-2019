@@ -40,7 +40,7 @@ describe('Testovi za post metodu fox/teme/izmjeniTemu/:idTeme', ()=> {
     })
   });
 
-  it('Treba da vrati status 404 i poruku \'Neispravan id teme!\' za nepostojeci idPredmeta', (done) => {
+  it('Treba da vrati status 404 i poruku \'Neispravan id teme!\'', (done) => {
     //API call
     server.put('/fox/teme/izmjeniTemu/-1')
     .send({
