@@ -9,10 +9,13 @@ temeZavrsnihRouter.get('/:idPredmeta', (req, res)=> {
     res.setHeader('Content-Type', 'application/json');
 
     temeZavrsnihUtils.getTemeZavrsnih(idPredmeta, (err, teme)=> {
-        if (err) res.send(JSON.stringify( {
-            message: 'Greska! Ne postoji predmet sa id-em idPredmeta.',
-            err
-        }));
+        if (err) {
+            res.status(404);
+            res.send(JSON.stringify( {
+                message: 'Greska! Ne postoji predmet sa id-em idPredmeta.',
+                err
+            }));
+        }
         else res.send(teme);
     });
 });
@@ -32,7 +35,7 @@ temeZavrsnihRouter.post('/novaTema', (req, res) => {
     else {
         temeZavrsnihUtils.addNovaTema(postBody, (err,tema)=> {
             if (err) {
-                res.status(400);
+                res.status(404);
                 res.send(JSON.stringify({
                     message: "Neispravni id-evi!"
                 }));
