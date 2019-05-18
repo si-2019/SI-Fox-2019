@@ -20,7 +20,7 @@ describe('Testovi za delete metodu fox/teme/izbrisiTemu/:idTeme', ()=> {
     });
     it('Treba da vrati status 404 za idTeme -1', (done) => {
         //API call
-        server.delete('/fox/teme/-1')
+        server.delete('/fox/teme/izbrisiTemu/-1')
         .expect("Content-type",/json/)
         .expect(200)
         .end(function(err, res) {
