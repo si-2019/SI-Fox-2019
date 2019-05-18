@@ -80,7 +80,7 @@ temeZavrsnihRouter.put('/izmjeniTemu/:idTeme', (req,res) => {
         temeZavrsnihUtils.updateTemaZavrsnih(idTeme, postBody, (err, tema) => {
             //console.log(tema);
             if (err) {
-                res.status(400);
+                res.status(404);
                 res.send(JSON.stringify({
                     message: "Neispravan id teme!"
                 }));

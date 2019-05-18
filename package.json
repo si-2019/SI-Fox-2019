@@ -4,7 +4,7 @@
   "description": "* Dino Gafić\r * Fadil Kalača\r * Ajdina Memišević\r * Edina Osmnspahić\r * Šajla Pljakić\r * Dženana Šabović\r * Nedim Tarakčija\r * Amar Terović",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./tests/deleteTemaZavrsnihTests.js --exit",
+    "test": "mocha ./tests/updateTemaZavrsnihTests.js --exit",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
