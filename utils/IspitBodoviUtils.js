@@ -34,16 +34,30 @@ const bodujIspit = (postBody, callback) => {
                             idIspita: idIspita,
                             idKorisnika: idKorisnika
                         }
-                    }).then((unos)=> {
-                        callback(null, unos);
-                    });   
+                    });
+                    callback(null);   
                 }
             });           
         };
     });
 }
 
+const vratiBodove = (idKorisnika, idIspita, callback) => {
+    db.IspitBodovi.findOne({
+        where: {
+            idKorisnika: idKorisnika,
+            idIspita: idIspita
+        }
+    }).then((bodovi) => {
+        if(!bodovi) {
+            callback(true);
+        }
+        else callback(null, bodovi);
+    })
+}
+
 module.exports = {
     provjeraParametaraBoduj,
-    bodujIspit
+    bodujIspit, 
+    vratiBodove
 }

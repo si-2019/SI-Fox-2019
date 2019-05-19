@@ -29,36 +29,21 @@ ispitBodoviRouter.post('/', (req,res) => {
     } 
 });
 
-/*
-ispitBodoviRouter.get('/bodoviIspit/:idStudenta/:idPredmeta/:idIspita', (req,res)=> {
-    let idStudenta = req.params.idStudenta;
-    let idPredmeta = req.params.idPredmeta;
+ispitBodoviRouter.get('/:idKorisnika/:idIspita', (req,res)=> {
+    let idKorisnika = req.params.idKorisnika;
+    let idIspita = req.params.idIspita;
     res.setHeader('Content-Type', 'application/json');
 
-    ispitBodoviUtils.getZahtjeviZavrsni(idProfesora, (err, zahtjevi) => {
-        if (err) res.send(JSON.stringify( {
-            message: 'Greska!',
-            err
-        }));
-        else res.send(zahtjevi);
-    });
-});
-
-ispitBodoviRouter.put('/bodoviIspit', (req,res) => {
-    res.setHeader('Content-Type', 'application/json');
-
-    ispitBodoviUtils.odobriZahtjeviZavrsni(idTeme, (err, tema) => {
-        if(err) {
+    ispitBodoviUtils.vratiBodove(idKorisnika, idIspita, (err, bodovi) => {
+        if (err) {
             res.status(404);
             res.send(JSON.stringify( {
-                message: 'Greska! Ne postoji tema sa id-em idTeme.',
-                err
+                message: 'Greska! Neispravni id-evi korisnika ili ispita',  
             }));
         }
-        else res.send(tema);
-    })
-
-});*/
+        else res.send(bodovi);
+    });
+});
 
 
 
