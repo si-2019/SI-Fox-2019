@@ -3,19 +3,25 @@ const ispitBodoviRouter = express.Router();
 
 const ispitBodoviUtils = require('../utils/ispitBodoviUtils');
 
-ispitBodoviRouter.post('/bodoviIspit', (req,res) => {
+ispitBodoviRouter.post('/', (req,res) => {
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');
 
     let ispravniParametri = ispitBodoviUtils.provjeraParametaraBoduj(postBody);
-    if (!ispravniParametri) res.send(JSON.stringify({
-        message: 'Neispravni parametri unutar body-a! Ocekivani format [idIspita, idKorisnika, bodovi]'
-    }))
+    if (!ispravniParametri) {
+        res.status(400);
+        res.send(JSON.stringify({
+            message: 'Neispravni parametri unutar body-a! Ocekivani format [idIspita, idKorisnika, bodovi]'
+        }))
+    }
     else {
         ispitBodoviUtils.bodujIspit(postBody, (err,tema)=> {
-            if (err) res.send(JSON.stringify({
-                message: "Neispravni id-evi! Ne postoji idIspita ili idKorisnika sa ulogom idUloga:1 (student)"
-            }));
+            if (err) {
+                res.status(404);
+                res.send(JSON.stringify({
+                    message: "Neispravni id-evi! Ne postoji idIspita ili idKorisnika sa ulogom idUloga:1 (student)"
+                }));
+            }
             else res.send(JSON.stringify({
                 message: "Uspjesno bodovan ispit!"
             }));

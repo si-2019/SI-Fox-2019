@@ -1,7 +1,8 @@
 const db = require('../models/db');
 
 const provjeraParametaraBoduj = (postBody) => {
-    if(!postBody['idIspita'] || !postBody['idKorisnika'] || !postBody['bodovi'] ) 
+    let bodovi = postBody['bodovi'];
+    if(!postBody['idIspita'] || !postBody['idKorisnika'] || !bodovi ) 
         return false;
     if (bodovi < 0 || bodovi > 100) return false;
     return true;
@@ -11,6 +12,7 @@ const bodujIspit = (postBody, callback) => {
     idIspita = postBody['idIspita']; 
     idKorisnika = postBody['idKorisnika'];
     bodovi = postBody['bodovi'];
+    
     db.Ispit.findOne({ //Provjera postoji li ispit
         where: {idIspit: idIspita}
     }).then((ispit) => {
@@ -32,8 +34,9 @@ const bodujIspit = (postBody, callback) => {
                             idIspita: idIspita,
                             idKorisnika: idKorisnika
                         }
-                    }).then(unos);
-                    callback(null, unos);
+                    }).then((unos)=> {
+                        callback(null, unos);
+                    });   
                 }
             });           
         };
