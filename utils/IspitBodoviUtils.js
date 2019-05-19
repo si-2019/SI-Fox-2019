@@ -3,25 +3,39 @@ const db = require('../models/db');
 const provjeraParametaraBoduj = (postBody) => {
     if(!postBody['idIspita'] || !postBody['idKorisnika'] || !postBody['bodovi'] ) 
         return false;
- 
+    if (bodovi < 0 || bodovi > 100) return false;
     return true;
 }
 
-const bodujIspit = (idTeme, callback) => {
-    db.ZahtjeviZavrsni.findOne({
-        where: {idTema: idTeme}
-    }).then((tema) => {
-        if(!tema || tema.length==0) callback(true); //Greska - ne postoji
-        else {
-            //Mijenjamo
-            db.ZahtjeviZavrsni.update({
-                odobreno: '1' 
-            }, {
+const bodujIspit = (postBody, callback) => {
+    idIspita = postBody['idIspita']; 
+    idKorisnika = postBody['idKorisnika'];
+    bodovi = postBody['bodovi'];
+    db.Ispit.findOne({ //Provjera postoji li ispit
+        where: {idIspit: idIspita}
+    }).then((ispit) => {
+        if(!ispit) callback(true); //Greska - ne postoji
+        else { //Provjera postoji li student
+            db.Korisnik.findOne({
                 where: {
-                    idTema: idTeme
+                    id: idKorisnika,
+                    idUloga : 1 //Student
                 }
-            });
-            callback(null, tema);
+            }).then((student)=> {
+                if (!student) callback(true);
+                else {
+                    //Unos bodova
+                    db.IspitBodovi.update({
+                        bodovi: bodovi 
+                    }, {
+                        where: {
+                            idIspita: idIspita,
+                            idKorisnika: idKorisnika
+                        }
+                    }).then(unos);
+                    callback(null, unos);
+                }
+            });           
         };
     });
 }

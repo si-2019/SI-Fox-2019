@@ -14,7 +14,7 @@ ispitBodoviRouter.post('/bodoviIspit', (req,res) => {
     else {
         ispitBodoviUtils.bodujIspit(postBody, (err,tema)=> {
             if (err) res.send(JSON.stringify({
-                message: "Neispravni id-evi!"
+                message: "Neispravni id-evi! Ne postoji idIspita ili idKorisnika sa ulogom idUloga:1 (student)"
             }));
             else res.send(JSON.stringify({
                 message: "Uspjesno bodovan ispit!"
