@@ -42,6 +42,11 @@ const ZahtjeviZavrsniRouter = require('./services/ZahtjeviZavrsniRoute');
 app.use('/fox/teme', ZahtjeviZavrsniRouter);
 
 
+//Definisanje rute za prisustvo studenta na predmetu
+const PrisustvoRouter = require('./services/PrisustvoRoute');
+app.use('/fox/prisustvo',PrisustvoRouter);
+
+
 //---------------APIs--------------------------------------------------------------------
 
 //Return info for table Studenti
