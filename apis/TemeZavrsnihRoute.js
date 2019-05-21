@@ -1,6 +1,8 @@
 const express = require('express');
 const temeZavrsnihAPIRouter = express.Router();
 const axios = require('axios');
+
+
 //const request = require('request');
 
 /*const teme = [
@@ -71,7 +73,21 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', (req, res) => {
 
 temeZavrsnihAPIRouter.post('/novaTema', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    axios.post('http://localhost:31906/fox/teme/'+idPredmeta)
+    //console.log(req.body);
+    naziv = req.body.naziv;
+    opis = req.body.opis;
+    idProfesora = req.body.idProfesora;
+    idPredmeta = req.body.idPredmeta;
+
+    axios.post('http://localhost:31906/fox/teme/novaTema', {
+        "naziv": naziv,
+        "opis": opis,
+        "idProfesora": idProfesora,
+        "idPredmeta": idPredmeta
+    }).then((response) => {
+        console.log(response);
+    }).catch(err => console.log(err));
+    res.send("");
 });
 
 temeZavrsnihAPIRouter.post('/izmjeniTemu/:idTema', (req, res) => {
