@@ -41,6 +41,9 @@ app.use('/fox/teme', TemeZavrsnihRouter);
 const ZahtjeviZavrsniRouter = require('./services/ZahtjeviZavrsniRoute');
 app.use('/fox/teme', ZahtjeviZavrsniRouter);
 
+const PredmetStudentRouter = require('./services/PredmetStudentRoute');
+app.use('/fox/ocjene', PredmetStudentRouter);
+
 
 //---------------APIs--------------------------------------------------------------------
 
