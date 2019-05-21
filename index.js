@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');  // definisanje env varijabli
-dotenv.config();                   // postavljanje configa 
+dotenv.config();
+// postavljanje configa 
 
 // init express
 const app = express();
@@ -43,7 +44,11 @@ app.use('/fox/teme', ZahtjeviZavrsniRouter);
 
 
 //---------------APIs--------------------------------------------------------------------
+const TemeZavrsnihAPIRouter = require('./apis/TemeZavrsnihRoute');
+app.use('/api/fox/temeZavrsnih', TemeZavrsnihAPIRouter);
 
+
+//------------Hardkodirani APIji-----------------------------------------
 //Return info for table Studenti
 const studenti = [
     {

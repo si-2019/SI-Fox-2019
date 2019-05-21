@@ -19,11 +19,11 @@ const odobriZahtjeviZavrsni = (idTeme, callback) => {
     });
 }
 
-const getZahtjeviZavrsni = (idProfesora, callback) => {
-    db.ZahtjeviZavrsni.findAll({
-        where: {idProfesor: idProfesora}
-    }).then((zahtjevi) => {
-        callback(null, zahtjevi);
+const getZahtjeviZavrsni = (idTeme, callback) => {
+    db.ZahtjeviZavrsni.findOne({
+        where: {idTema: idTeme}
+    }).then((zahtjev) => {
+        callback(null, zahtjev);
     });
 }
 
