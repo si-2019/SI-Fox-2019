@@ -23,10 +23,10 @@ predmetStudentRouter.post('/ocjena', (req, res) => {
 
     if (!predmetStudentUtils.provjeraParametaraOcjena(body))
         res.send(JSON.stringify('Neispravni parametri unutar tijela zahtjeva'));
-    else {
+    else { 
         predmetStudentUtils.addOcjena(body, (err, ocjena) => {
             if (err)
-                res.send(JSON.stringify('Greska? Ne postoje trazeni podaci'));
+                res.send(JSON.stringify('Greska? Ne postoji student/predmet ili neispravna akademska godina'));
             else
                 res.send(JSON.stringify('Uspjesno dodana nova tema!'));
         });

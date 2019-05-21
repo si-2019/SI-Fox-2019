@@ -53,16 +53,16 @@ const addOcjena = (body, callback) => {
             if (!predmet) {
                 callback(true);
                 return;
-            }
+            } 
             db.sequelize.query("SELECT * FROM `AkademskaGodina` WHERE id = " + body.idAkademskaGodina,
-                { type: sequelize.QueryTypes.SELECT }).then(akGod => {
-                    if (!akGod) {
+                { type: db.sequelize.QueryTypes.SELECT }).then(akGod => { console.log(typeof(akGod))
+                    if (!akGod || !akGod.id) {
                         callback(true);
                         return;
                     }
-                    db.PredmetStudent.create(ocjena).then((ocjena) => {
+                    db.PredmetStudent.create(ocjena).then((ocjena) => { 
                         if (!ocjena)
-                            callback(true); //Greska
+                            callback(true);
                         else
                             callback(null, ocjena);
                     });
