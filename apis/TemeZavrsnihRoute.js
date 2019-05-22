@@ -90,14 +90,27 @@ temeZavrsnihAPIRouter.post('/novaTema', (req, res) => {
     res.send("");
 });
 
-temeZavrsnihAPIRouter.post('/izmjeniTemu/:idTema', (req, res) => {
+temeZavrsnihAPIRouter.put('/izmjeniTemu/:idTema', (req, res) => {
     let idTema = req.params.idTema;
+    naziv = req.body.naziv;
+    opis = req.body.opis;
     res.setHeader('Content-Type', 'application/json');
+    axios.put('http://localhost:31906/fox/teme/izmjeniTemu/'+idTema, {
+        "naziv": naziv,
+        "opis": opis
+    }).then((response) => {
+        console.log(response);
+    }).catch(err => console.log(err));
+    res.send("");
 });
 
-temeZavrsnihAPIRouter.post('/izbrisiTemu/:idTema', (req, res) => {
+temeZavrsnihAPIRouter.delete('/izbrisiTemu/:idTema', (req, res) => {
     let idTema = req.params.idTema;
     res.setHeader('Content-Type', 'application/json');
+    axios.delete('http://localhost:31906/fox/teme/izmjeniTemu/'+idTema),then((response) => {
+        console.log(response);
+    }).catch(err => console.log(err));
+    res.send("");
 });
 
 module.exports = temeZavrsnihAPIRouter;
