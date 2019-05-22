@@ -114,11 +114,11 @@ temeZavrsnihAPIRouter.put('/izmjeniTemu/:idTema', (req, res) => {
 temeZavrsnihAPIRouter.delete('/izbrisiTemu/:idTema', (req, res) => {
     let idTema = req.params.idTema;
     res.setHeader('Content-Type', 'application/json');
-    axios.delete('http://localhost:31906/fox/teme/izbrisiTemu/'+idTema),then((response) => {
+    axios.delete('http://localhost:31906/fox/teme/izbrisiTemu/'+idTema).then((response) => {
         console.log(response);
     }).catch(err => console.log(err));
     
-    axios.delete('http://localhost:31906/fox/teme/izbrisiZahtjev/'+idTema),then((response) => {
+    axios.delete('http://localhost:31906/fox/teme/izbrisiZahtjev/'+idTema).then((response) => {
         console.log(response);
     }).catch(err => console.log(err));
 
