@@ -19,5 +19,6 @@ db.Predmet = sequelize.import(__dirname + '/Predmet.js');
 db.TemeZavrsnih = sequelize.import(__dirname + '/TemeZavrsnih.js');
 db.ZahtjeviZavrsni = sequelize.import(__dirname + '/ZahtjeviZavrsni.js');
 db.PrisustvoPredavanja = sequelize.import(__dirname + '/PrisustvoPredavanja.js');
-
+db.PrisustvoTutorijali = sequelize.import(__dirname + '/PrisustvoTutorijali.js');
+db.PrisustvoVjezbe = sequelize.import(__dirname + '/PrisustvoVjezbe.js');
 module.exports = db;
