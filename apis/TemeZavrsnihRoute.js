@@ -85,15 +85,14 @@ temeZavrsnihAPIRouter.post('/novaTema', (req, res) => {
         "idProfesora": idProfesora,
         "idPredmeta": idPredmeta
     }).then((response) => {
-        console.log(response);
+        axios.post('http://localhost:31906/fox/teme/dodajZahtjev', {
+        "idTema":  response.data.tema.id,
+        "idStudent": null,
+        "idProfesor": idProfesora,
+        "odobreno": null
+        }).catch(err => console.log(err));
     }).catch(err => console.log(err));
 
-    axios.post('http://localhost:31906/fox/teme/dodajZahtjev', {
-        "idTema":  28,
-        "idStudent": null,
-        "idProfesor": 167,
-        "odobreno": null
-    })
     res.send("");
 });
 

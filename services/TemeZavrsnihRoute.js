@@ -22,7 +22,7 @@ temeZavrsnihRouter.get('/:idPredmeta', (req, res)=> {
 
 temeZavrsnihRouter.post('/novaTema', (req, res) => {
     let postBody = req.body;
-    console.log(postBody);
+    //console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
 
     let ispravniParametri = temeZavrsnihUtils.provjeraParametaraAddNovaTema(postBody);
@@ -41,7 +41,8 @@ temeZavrsnihRouter.post('/novaTema', (req, res) => {
                 }));
             }
             else res.send(JSON.stringify({
-                message: "Uspjesno dodana nova tema!"
+                message: "Uspjesno dodana nova tema!",
+                tema: tema
             }));
         });
     } 

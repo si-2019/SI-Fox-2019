@@ -36,10 +36,10 @@ zahtjeviZavrsniRouter.get('/zahtjevi/:idTeme', (req,res)=> {
 zahtjeviZavrsniRouter.post('/dodajZahtjev', (req,res) => {
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');
-
+    //console.log(postBody);
     let ispravniParametri = zahtjeviZavrsniUtils.provjeraParametaraDodajZahtjev(postBody);
     if (!ispravniParametri) res.send(JSON.stringify({
-        message: 'Neispravni parametri unutar body-a! Ocekivani format formatu [idTema, idStudent, idProfesor, odobreno]'
+        message: 'Neispravni parametri unutar body-a! Ocekivani format [idTema, idStudent, idProfesor, odobreno]'
     }))
     else {
         zahtjeviZavrsniUtils.dodajZahtjev(postBody, (err,tema)=> {

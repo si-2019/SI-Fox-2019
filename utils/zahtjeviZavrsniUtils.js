@@ -28,7 +28,7 @@ const getZahtjeviZavrsni = (idTeme, callback) => {
 }
 
 const provjeraParametaraDodajZahtjev = (postBody) => {
-    if(!postBody['idTema'] || !postBody['idStudent'] || !postBody['idProfesor'] || !postBody['odobreno']) return false;
+    if(typeof postBody['idTema'] === 'undefined' || typeof postBody['idStudent'] === 'undefined' || typeof postBody['idProfesor'] === 'undefined' || typeof postBody['odobreno'] === 'undefined') return false;
     return true;
 }
 
@@ -54,18 +54,18 @@ const dodajZahtjev = (postBody, callback) => {
             }).then((profesor) => {
                 if(!profesor) callback(true); //Greska
                 else {
-                    db.Korisnik.findOne({
+                    /*db.Korisnik.findOne({
                         where: {
                             id: postBody['idStudent']
                         }
                     }).then((student) => {
                         if(!student) callback(true); //Greska
-                        else {
+                        else {*/
                             db.ZahtjeviZavrsni.create(noviZahtjev).then((novi) => {
                                 if (!novi) callback(true); //Greska
                                 else callback(null, novi); })
-                        }
-                    });
+                        //}
+                    //});
                 }
             });
         }
