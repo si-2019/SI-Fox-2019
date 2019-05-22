@@ -83,4 +83,35 @@ prisustvoRouter.post('/addVjezbe', (req, res)=> {
     }
 });
 
+//post prisustva studenta na tutorijalima
+prisustvoRouter.post('/addTutorijali', (req, res)=> {
+    let postBody = req.body;
+    console.log(postBody);
+    res.setHeader('Content-Type', 'application/json');
+
+    let ispravniParametri = prisustvoUtils.provjeraParametara(postBody);
+    if (!ispravniParametri) {
+        res.status(400);
+        res.send(JSON.stringify({
+            message: 'Neispravni parametri unutar body-a!'
+        }));
+    }
+    else {
+        prisustvoUtils.addTutorijali(postBody, (err,prisustvo)=> {
+            if (err) {
+                res.status(405);
+                res.send(JSON.stringify({
+                    message: "Neispravni id-evi!"
+                }));
+            }
+            else {
+                res.status(200);
+                res.send(JSON.stringify({
+                
+                message: "Uspjesan unos!"
+            }));}
+        });
+    }
+});
+
 module.exports = prisustvoRouter;
