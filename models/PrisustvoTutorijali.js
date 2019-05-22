@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
       },
       prisutan: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: true
       },
       brojSedmice: {
         type: DataTypes.INTEGER(10),
