@@ -1,7 +1,7 @@
 const express = require('express');
 const temeZavrsnihAPIRouter = express.Router();
 const axios = require('axios');
-
+const cors = require('cors');
 
 //const request = require('request');
 
@@ -35,7 +35,7 @@ const kreirajTemu = (id, naziv, opis, odabrana, student) => {
 }
 
 //Get teme zavrsnih na predmetu
-temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', (req, res) => {
+temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) => {
     //'/api/fox/tabelaStudenti?_limit=100'
     let idPredmeta = req.params.idPredmeta;
     res.setHeader('Content-Type', 'application/json');
@@ -57,13 +57,15 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', (req, res) => {
                         }
                         //console.log(res2.data.idStudent); //Poziv apija idStudent -> ime i prezime studenta
                         tema = kreirajTemu(id, naziv, opis, odobreno, res2.data.idStudent);
-                        //console.log(tema);
+                        console.log(res2.message);
                         teme.push(tema); 
+
                         return teme;                   
                     }
                 ).catch(err => console.log(err));
             }
             rez.then((teme)=> {
+                //console.log(teme);
                 res.send(teme);
             });         
         })

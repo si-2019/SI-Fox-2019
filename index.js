@@ -85,9 +85,18 @@ app.get('/api/fox/tabelaStudenti/ispiti', cors(), (req, res) => {
 //APIji za početnu stranicu
 
 const predmeti = [
-    {naziv: "Tehnike programiranja"},
-    {naziv: "Numerički algoritmi"},
-    {naziv: "Diskretna matematika"}
+    {
+        id: 1,
+        naziv: "Tehnike programiranja"
+    },
+    {
+        id: 2,
+        naziv: "Numerički algoritmi"
+    },
+    {
+        id: 3,
+        naziv: "Diskretna matematika"
+    }
 ]
 
 const grupe = [
