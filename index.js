@@ -100,9 +100,18 @@ const predmeti = [
 ]
 
 const grupe = [
-    {naziv: "Grupa 1"},
-    {naziv: "Grupa 2"},
-    {naziv: "Grupa 3"}
+    {
+        id: 1,
+        naziv: "Grupa 1"
+    },
+    {
+        id: 2,
+        naziv: "Grupa 2"
+    },
+    {
+        id:3,
+        naziv: "Grupa 3"
+    }
 ]
 
 app.get('/api/fox/predmeti/:idKorisnika', cors(), (req, res) => {
