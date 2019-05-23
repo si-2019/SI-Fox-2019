@@ -8,10 +8,13 @@ zahtjeviZavrsniRouter.put('/odobri/:idTeme', (req,res) => {
     res.setHeader('Content-Type', 'application/json');
 
     zahtjeviZavrsniUtils.odobriZahtjeviZavrsni(idTeme, (err, tema) => {
-        if(err) res.send(JSON.stringify( {
-            message: 'Greska! Ne postoji tema sa id-em idTeme.',
-            err
-        }));
+        if(err) {
+            res.status(404);
+            res.send(JSON.stringify( {
+                message: 'Greska! Ne postoji tema sa id-em idTeme.',
+                err
+            }));
+        }
         else res.send(tema);
     })
 
