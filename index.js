@@ -39,7 +39,11 @@ const TemeZavrsnihRouter = require('./services/TemeZavrsnihRoute');
 //Definisanje rute za Teme Zavrsnih
 app.use('/fox/teme', TemeZavrsnihRouter);
 const ZahtjeviZavrsniRouter = require('./services/ZahtjeviZavrsniRoute');
+//Definisanje rute za Zahtjeve Zavrsnih
 app.use('/fox/teme', ZahtjeviZavrsniRouter);
+const IspitBodoviRouter = require('./services/IspitBodoviRoute');
+//Definisanje rute za Zahtjeve Zavrsnih
+app.use('/fox/bodoviIspit', IspitBodoviRouter);
 
 const PredmetStudentRouter = require('./services/PredmetStudentRoute');
 app.use('/fox/ocjene', PredmetStudentRouter);
