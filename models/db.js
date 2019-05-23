@@ -18,6 +18,7 @@ db.Korisnik = sequelize.import(__dirname + '/Korisnik.js');
 db.Predmet = sequelize.import(__dirname + '/Predmet.js');
 db.TemeZavrsnih = sequelize.import(__dirname + '/TemeZavrsnih.js');
 db.ZahtjeviZavrsni = sequelize.import(__dirname + '/ZahtjeviZavrsni.js');
+db.PredmetStudent = sequelize.import(__dirname + '/PredmetStudent.js');
 db.IspitBodovi = sequelize.import(__dirname + '/IspitBodovi.js');
 db.Ispit = sequelize.import(__dirname + '/Ispit.js');
 
