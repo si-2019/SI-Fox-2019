@@ -39,7 +39,14 @@ const TemeZavrsnihRouter = require('./services/TemeZavrsnihRoute');
 //Definisanje rute za Teme Zavrsnih
 app.use('/fox/teme', TemeZavrsnihRouter);
 const ZahtjeviZavrsniRouter = require('./services/ZahtjeviZavrsniRoute');
+//Definisanje rute za Zahtjeve Zavrsnih
 app.use('/fox/teme', ZahtjeviZavrsniRouter);
+const IspitBodoviRouter = require('./services/IspitBodoviRoute');
+//Definisanje rute za Zahtjeve Zavrsnih
+app.use('/fox/bodoviIspit', IspitBodoviRouter);
+
+const PredmetStudentRouter = require('./services/PredmetStudentRoute');
+app.use('/fox/ocjene', PredmetStudentRouter);
 
 
 //Definisanje rute za prisustvo studenta na predmetu
@@ -63,6 +70,45 @@ const studenti = [
         ],
         ukupno: 70,
         ocjena: 7
+    },
+    {
+        index: 16789,
+        imePrezime: 'Stu Dent',
+        prisustvo: 0,
+        zadace: 7,
+        ispiti: [
+            {naziv: 'I parcijalni ispit', bodovi: '10'},
+            {naziv: 'II parcijalni ispit', bodovi: '7'}
+        ],
+        ukupno: 24,
+        ocjena: 5
+    }
+];
+
+const profesori = [
+    {
+        id: 0,
+        imePrezime: 'Samir Ribić',
+        idOdsjek: 1,
+        email: 'megaribi@gmail.com',
+        mjestoRodjenja: 'Sarajevo',
+        predmeti: [
+            'Sistemsko programiranje',
+            'Operativni sistemi',
+            'Programski jezici i prevodioci'
+        ]
+    },
+    {
+        id: 1,
+        imePrezime: 'Prof Esor',
+        idOdsjek: 2,
+        email: 'profesor@gmail.com',
+        mjestoRodjenja: 'Tuzla',
+        predmeti: [
+            'Uvod u programiranje',
+            'Osnove racunarstva',
+            'Razvoj programskih rjesenja'
+        ]
     }
 ];
 
@@ -108,8 +154,32 @@ app.get('/api/fox/grupe/:idPredmeta', cors(), (req, res) => {
     res.json(grupe);
 });
 
+//endpointi za ocjene
 
+function getStudentFromIndex(index) {
+    let student = studenti.find(s => s.index === index);
+    return `${student.imePrezime}, ${student.index}`;
+}
 
+app.get('/api/fox/ocjene/:index', cors(), (req, res) => {
+    console.log(req.params);
+    let index = req.params.index;
+    let stduent = getStudentFromIndex(parseInt(index));
+    res.status(200).json(stduent);
+});
+
+//profesor login
+
+function getProfesorFromId(id) {
+    return profesori.find(p => p.id === id).imePrezime;
+}
+
+app.get('/api/fox/profesori/:id', cors(), (req, res) => {
+    console.log(req.params);
+    let id = req.params.id;
+    let profesor = getProfesorFromId(parseInt(id));
+    res.status(200).json(profesor);
+});
 
 //Listen on port
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

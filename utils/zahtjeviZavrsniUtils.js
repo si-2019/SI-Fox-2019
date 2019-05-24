@@ -28,7 +28,9 @@ const getZahtjeviZavrsni = (idProfesora, callback) => {
 }
 
 const provjeraParametaraDodajZahtjev = (postBody) => {
-    if(!postBody['idTema'] || !postBody['idStudent'] || !postBody['idProfesor'] || !postBody['odobreno']) return false;
+    if(!postBody['idTema'] || !postBody['idStudent'] || !postBody['idProfesor'] || !postBody['odobreno']) 
+        return false;
+    
     return true;
 }
 

@@ -4,7 +4,7 @@
   "description": "* Dino Gafić\r * Fadil Kalača\r * Ajdina Memišević\r * Edina Osmnspahić\r * Šajla Pljakić\r * Dženana Šabović\r * Nedim Tarakčija\r * Amar Terović",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./tests/odobriZahtjeviZavrsniTests.js --exit",
+    "test": "mocha ./tests/vratiBodoveTests.js --exit",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },
@@ -32,10 +32,12 @@
     "swagger-ui-express": "^4.0.2",
     "yamljs": "^0.3.0"
   },
+
   "devDependencies": {
     "mocha": "^6.1.4",
     "nodemon": "^1.19.0",
     "should": "^13.2.3",
     "supertest": "^4.0.2"
   }
+
 }
