@@ -23,7 +23,7 @@ module.exports = function(sequelize, DataTypes) {
           }
       },
       prisutan: {
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.STRING(255),
         allowNull: true
       },
       brojSedmice: {
