@@ -45,6 +45,7 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
             let nizTema = res1.data; //id, naziv, opis teme
             var teme = [];
             for(i in nizTema) {
+                //if(i==0) console.log(res1.status);
                 let id = nizTema[i].id;
                 let naziv = nizTema[i].naziv;
                 let opis = nizTema[i].opis;
@@ -57,7 +58,7 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
                         }
                         //console.log(res2.data.idStudent); //Poziv apija idStudent -> ime i prezime studenta
                         tema = kreirajTemu(id, naziv, opis, odobreno, res2.data.idStudent);
-                        console.log(res2.message);
+                        //console.log(res2);
                         teme.push(tema); 
 
                         return teme;                   
