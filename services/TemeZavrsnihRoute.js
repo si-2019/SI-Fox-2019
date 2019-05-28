@@ -71,7 +71,7 @@ temeZavrsnihRouter.delete('/izbrisiTemu/:idTeme', (req,res) => {
 temeZavrsnihRouter.put('/izmjeniTemu/:idTeme', (req,res) => {
     let idTeme = req.params.idTeme;
     let postBody = req.body;
-    console.log(postBody);
+    //console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
     
     let ispravniParametri = temeZavrsnihUtils.provjeraParametaraUpdateTema(postBody);

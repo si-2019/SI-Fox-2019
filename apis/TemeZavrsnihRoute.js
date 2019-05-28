@@ -38,16 +38,14 @@ const kreirajTemu = (id, naziv, opis, odabrana, student) => {
 temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) => {
     //'/api/fox/tabelaStudenti?_limit=100'
     let idPredmeta = req.params.idPredmeta;
-    let greska = false;
-    let teme = [];
     res.setHeader('Content-Type', 'application/json');
     axios.get('http://localhost:31906/fox/teme/'+idPredmeta)
     .then(
         (res1) => {
             let nizTema = res1.data; //id, naziv, opis teme 
             var teme = [];          
-            if (res1.status != 200) greska = true;
-            else {
+            //if (res1.status != 200) greska = true;
+            //else {
                 for(i in nizTema) {
                     //if(i==0) console.log(res1.status);
                     let id = nizTema[i].id;
@@ -64,27 +62,27 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
                             tema = kreirajTemu(id, naziv, opis, odobreno, res2.data.idStudent);
                             //console.log(res2);
                             teme.push(tema); 
-                            if (res2.status != 200) greska = true;
+                            if (res2.status != 200) {
+                                res.status(400); 
+                                res.send(res2.data.message);
+                            }
                             return teme;                  
                         }
-                    ).catch((err) => {greska=true; console.log(err)});
+                    ).catch((err) => {res.status(err.response.status); res.send(err.response.data)});
                 }          
-            }
+            //}
             rez.then((teme)=> {
                 //console.log(teme);
                 if (greska) {
                     res.status(400);
-                    res.send(teme);
+                    res.send(rez.data.message);
                 }
                 else {
                     res.status(200);
                     res.send(teme);
                 }
-            }).catch((err) => {greska=true; console.log(err)});          
-        }).catch((err) => {greska=true; console.log(err)});
-    //Doslo je do greske
-    res.status(400);
-    res.send(teme);
+            }).catch((err) => {res.status(err.response.status); res.send(err.response.data);});          
+        }).catch((err) => {res.status(err.response.status); res.send(err.response.data)});
 });
 
 temeZavrsnihAPIRouter.post('/novaTema', (req, res) => {
@@ -103,7 +101,7 @@ temeZavrsnihAPIRouter.post('/novaTema', (req, res) => {
     }).then((response) => {
         if (response.status!=200) {
             res.status(400);
-            res.send("Došlo je do greške!");
+            res.send(response.data);
         }
         axios.post('http://localhost:31906/fox/teme/dodajZahtjev', {
         "idTema":  response.data.tema.id,
@@ -113,11 +111,11 @@ temeZavrsnihAPIRouter.post('/novaTema', (req, res) => {
         }).then((res2)=> {
             if (res2.status!=200) {
                 res.status(400);
-                res.send("Došlo je do greške!");
+                res.send(res2.data);
             }
-        }).catch((err) => {res.status(400); res.send("Greska!"); console.log(err)});
-    }).catch((err) => {res.status(400); res.send("Greska!"); console.log(err)});
-    res.send("");
+            res.send(JSON.stringify("Uspješno kreirana nova tema!"));
+        }).catch((err) => {res.status(err.response.status); res.send(err.response.data);});
+    }).catch((err) => {res.status(err.response.status); res.send(err.response.data);});
 });
 
 temeZavrsnihAPIRouter.put('/izmjeniTemu/:idTema', (req, res) => {
@@ -129,24 +127,42 @@ temeZavrsnihAPIRouter.put('/izmjeniTemu/:idTema', (req, res) => {
         "naziv": naziv,
         "opis": opis
     }).then((response) => {
-        console.log(response);
-    }).catch((err) => {res.status(400); res.send("Greska!"); console.log(err)});
-    res.send("");
+        if (response.status != 200) {
+            res.status(response.status);
+        }
+        res.send(response.data);
+    }).catch((err) => {res.status(err.response.status); res.send(err.response.data)});
+    
 });
 
 temeZavrsnihAPIRouter.delete('/izbrisiTemu/:idTema', (req, res) => {
     let idTema = req.params.idTema;
+    let greska = false;
     res.setHeader('Content-Type', 'application/json');
     res.status(200);
-    axios.delete('http://localhost:31906/fox/teme/izbrisiTemu/'+idTema).then((response) => {
-        console.log(response);
-    }).catch((err) => {res.status(400); res.send("Greska!"); console.log(err)});
+    p1=axios.delete('http://localhost:31906/fox/teme/izbrisiTemu/'+idTema).then((response) => {
+       // console.log(response.status);
+        if (response.status != 200) {
+            res.status(response.status);
+            res.send(response.data);
+            greska = true;
+        }
+    }).catch((err) => {greska = true; res.status(err.response.status); res.send(err.response.data);});
     
-    axios.delete('http://localhost:31906/fox/teme/izbrisiZahtjev/'+idTema).then((response) => {
-        console.log(response);
-    }).catch((err) => {res.status(400); res.send("Greska!"); console.log(err)});
-
-    res.send("Uspjesno obrisana tema");
+    p2=axios.delete('http://localhost:31906/fox/teme/izbrisiZahtjev/'+idTema).then((response) => {
+       // console.log(response.status);
+        if (response.status != 200) {
+            res.status(response.status);
+            res.send(response.data);
+            greska = true;
+        }
+    }).catch((err) => {greska = true; res.status(err.response.status); res.send(err.response.data);});
+    //axios returns promise, Promise.all returns a single Promise that resolves when all of the promises passed as an iterable have resolved or when the iterable contains no promises. It rejects with the reason of the first promise that rejects.
+    Promise.all([p1, p2]).then( ()=> {
+        if(!greska)
+        res.send(JSON.stringify("Uspjesno obrisana tema!"));
+    });
+    
 });
 
 module.exports = temeZavrsnihAPIRouter;
