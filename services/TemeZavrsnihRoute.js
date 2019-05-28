@@ -54,13 +54,17 @@ temeZavrsnihRouter.delete('/izbrisiTemu/:idTeme', (req,res) => {
 
     temeZavrsnihUtils.deleteTemaZavrsnih(idTeme, (err) => {
         if (err) {
+            res.status(400);
             res.send(JSON.stringify({
                 message: "Neispravan id teme!"
             }));
         }
-        else res.send(JSON.stringify({
-            message: "Uspjesno obrisana tema!"
-        }));
+        else {
+            res.status(200);
+            res.send(JSON.stringify({
+                message: "Uspjesno obrisana tema!"
+            }));
+        }
     });
 });
 
