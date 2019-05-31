@@ -7,7 +7,7 @@ var server = supertest.agent("http://localhost:31906");
 
 //Unit test begin
 describe('Testovi za get metodu fox/teme/:idPredmeta', ()=> {
-    it('Treba da vrati status 404 za idPredmeta -1', (done) => {
+    it('Treba da vrati status 200 za idPredmeta 4', (done) => {
       //API call
       server.get('/fox/teme/4')
       .expect("Content-type",/json/)

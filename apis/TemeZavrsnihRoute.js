@@ -47,11 +47,11 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
             //if (res1.status != 200) greska = true;
             //else {
                 for(i in nizTema) {
-                    if(i==0) console.log(res1.status);
+                    //if(i==0) console.log(res1.status);
                     let id = nizTema[i].id;
                     let naziv = nizTema[i].naziv;
                     let opis = nizTema[i].opis;
-                    console.log(res1.data[i].id);
+                   // console.log(res1.data[i].id);
                     rez = axios.get('http://localhost:31906/fox/teme/zahtjevi/'+id).then(
                         (res2) => {
                             let odobreno = "ne";

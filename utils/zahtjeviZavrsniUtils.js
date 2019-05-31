@@ -29,6 +29,7 @@ const getZahtjeviZavrsni = (idTeme, callback) => {
 
 const provjeraParametaraDodajZahtjev = (postBody) => {
     if(typeof postBody['idTema'] === 'undefined' || typeof postBody['idStudent'] === 'undefined' || typeof postBody['idProfesor'] === 'undefined' || typeof postBody['odobreno'] === 'undefined') return false;
+
     return true;
 }
 

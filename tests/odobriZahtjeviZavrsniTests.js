@@ -31,7 +31,7 @@ describe('Testovi za put metodu fox/teme/odobri/:idTeme', ()=> {
         "opis": "Ovo je opis testne update teme"
     })
     .expect("Content-type",/json/)
-    .expect(200)
+    .expect(404)
     .end(function(err, res) {
       res.statusCode.should.equal(404);
       res.body.message.should.equal('Greska! Ne postoji tema sa id-em idTeme.');
