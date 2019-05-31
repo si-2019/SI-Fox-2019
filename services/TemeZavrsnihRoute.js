@@ -22,7 +22,7 @@ temeZavrsnihRouter.get('/:idPredmeta', (req, res)=> {
 
 temeZavrsnihRouter.post('/novaTema', (req, res) => {
     let postBody = req.body;
-    console.log(postBody);
+    //console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
 
     let ispravniParametri = temeZavrsnihUtils.provjeraParametaraAddNovaTema(postBody);
@@ -41,7 +41,8 @@ temeZavrsnihRouter.post('/novaTema', (req, res) => {
                 }));
             }
             else res.send(JSON.stringify({
-                message: "Uspjesno dodana nova tema!"
+                message: "Uspjesno dodana nova tema!",
+                tema: tema
             }));
         });
     } 
@@ -53,20 +54,24 @@ temeZavrsnihRouter.delete('/izbrisiTemu/:idTeme', (req,res) => {
 
     temeZavrsnihUtils.deleteTemaZavrsnih(idTeme, (err) => {
         if (err) {
+            res.status(400);
             res.send(JSON.stringify({
                 message: "Neispravan id teme!"
             }));
         }
-        else res.send(JSON.stringify({
-            message: "Uspjesno obrisana tema!"
-        }));
+        else {
+            res.status(200);
+            res.send(JSON.stringify({
+                message: "Uspjesno obrisana tema!"
+            }));
+        }
     });
 });
 
 temeZavrsnihRouter.put('/izmjeniTemu/:idTeme', (req,res) => {
     let idTeme = req.params.idTeme;
     let postBody = req.body;
-    console.log(postBody);
+    //console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
     
     let ispravniParametri = temeZavrsnihUtils.provjeraParametaraUpdateTema(postBody);

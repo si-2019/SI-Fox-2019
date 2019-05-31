@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');  // definisanje env varijabli
-dotenv.config();                   // postavljanje configa 
+dotenv.config();
+// postavljanje configa 
 
 // init express
 const app = express();
@@ -55,6 +56,14 @@ app.use('/fox/prisustvo',PrisustvoRouter);
 
 
 //---------------APIs--------------------------------------------------------------------
+const temeZavrsnihAPIRouter = require('./apis/TemeZavrsnihRoute');
+app.use('/api/fox/temeZavrsnih', temeZavrsnihAPIRouter);
+const pocetnaStranicaAPIRouter = require('./apis/PocetnaStranicaRoute');
+app.use('/api/fox', pocetnaStranicaAPIRouter);
+const tabelaStudentiAPIRouter = require('./apis/TabelaStudentiRoute');
+app.use('/api/fox/tabelaStudenti', tabelaStudentiAPIRouter);
+
+//------------Hardkodirani APIji-----------------------------------------
 
 //Return info for table Studenti
 const studenti = [
@@ -118,7 +127,7 @@ const ispiti = [
     {naziv: 'Usmeni ispit'}
 ]
 
-app.get('/api/fox/tabelaStudenti', cors(), (req, res) => {
+/*app.get('/api/fox/tabelaStudenti', cors(), (req, res) => {
     //'/api/fox/tabelaStudenti?_limit=100'
     res.json(studenti);
 });
@@ -126,23 +135,41 @@ app.get('/api/fox/tabelaStudenti', cors(), (req, res) => {
 app.get('/api/fox/tabelaStudenti/ispiti', cors(), (req, res) => {
     //'/api/fox/tabelaStudenti?_limit=100'
     res.json(ispiti);
-});
+});*/
 
 //APIji za početnu stranicu
 
 const predmeti = [
-    {naziv: "Tehnike programiranja"},
-    {naziv: "Numerički algoritmi"},
-    {naziv: "Diskretna matematika"}
+    {
+        id: 1,
+        naziv: "Tehnike programiranja"
+    },
+    {
+        id: 2,
+        naziv: "Numerički algoritmi"
+    },
+    {
+        id: 3,
+        naziv: "Diskretna matematika"
+    }
 ]
 
 const grupe = [
-    {naziv: "Grupa 1"},
-    {naziv: "Grupa 2"},
-    {naziv: "Grupa 3"}
+    {
+        id: 1,
+        naziv: "Grupa 1"
+    },
+    {
+        id: 2,
+        naziv: "Grupa 2"
+    },
+    {
+        id:3,
+        naziv: "Grupa 3"
+    }
 ]
 
-app.get('/api/fox/predmeti/:idKorisnika', cors(), (req, res) => {
+/*app.get('/api/fox/predmeti/:idKorisnika', cors(), (req, res) => {
     //'/api/fox/tabelaStudenti?_limit=100'
     console.log(req.params);
     res.json(predmeti);
@@ -152,7 +179,8 @@ app.get('/api/fox/grupe/:idPredmeta', cors(), (req, res) => {
     //'/api/fox/tabelaStudenti?_limit=100'
     console.log(req.params);
     res.json(grupe);
-});
+});*/
+
 
 //endpointi za ocjene
 

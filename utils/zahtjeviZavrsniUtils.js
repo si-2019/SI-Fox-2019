@@ -19,18 +19,17 @@ const odobriZahtjeviZavrsni = (idTeme, callback) => {
     });
 }
 
-const getZahtjeviZavrsni = (idProfesora, callback) => {
-    db.ZahtjeviZavrsni.findAll({
-        where: {idProfesor: idProfesora}
-    }).then((zahtjevi) => {
-        callback(null, zahtjevi);
+const getZahtjeviZavrsni = (idTeme, callback) => {
+    db.ZahtjeviZavrsni.findOne({
+        where: {idTema: idTeme}
+    }).then((zahtjev) => {
+        callback(null, zahtjev);
     });
 }
 
 const provjeraParametaraDodajZahtjev = (postBody) => {
-    if(!postBody['idTema'] || !postBody['idStudent'] || !postBody['idProfesor'] || !postBody['odobreno']) 
-        return false;
-    
+    if(typeof postBody['idTema'] === 'undefined' || typeof postBody['idStudent'] === 'undefined' || typeof postBody['idProfesor'] === 'undefined' || typeof postBody['odobreno'] === 'undefined') return false;
+
     return true;
 }
 
@@ -56,18 +55,18 @@ const dodajZahtjev = (postBody, callback) => {
             }).then((profesor) => {
                 if(!profesor) callback(true); //Greska
                 else {
-                    db.Korisnik.findOne({
+                    /*db.Korisnik.findOne({
                         where: {
                             id: postBody['idStudent']
                         }
                     }).then((student) => {
                         if(!student) callback(true); //Greska
-                        else {
+                        else {*/
                             db.ZahtjeviZavrsni.create(noviZahtjev).then((novi) => {
                                 if (!novi) callback(true); //Greska
                                 else callback(null, novi); })
-                        }
-                    });
+                        //}
+                    //});
                 }
             });
         }

@@ -20,26 +20,26 @@ zahtjeviZavrsniRouter.put('/odobri/:idTeme', (req,res) => {
 
 });
 
-zahtjeviZavrsniRouter.get('/zahtjevi/:idProfesora', (req,res)=> {
-    let idProfesora = req.params.idProfesora;
+zahtjeviZavrsniRouter.get('/zahtjevi/:idTeme', (req,res)=> {
+    let idTeme = req.params.idTeme;
     res.setHeader('Content-Type', 'application/json');
 
-    zahtjeviZavrsniUtils.getZahtjeviZavrsni(idProfesora, (err, zahtjevi) => {
+    zahtjeviZavrsniUtils.getZahtjeviZavrsni(idTeme, (err, zahtjev) => {
         if (err) res.send(JSON.stringify( {
             message: 'Greska!',
             err
         }));
-        else res.send(zahtjevi);
+        else res.send(zahtjev);
     });
 });
 
 zahtjeviZavrsniRouter.post('/dodajZahtjev', (req,res) => {
     let postBody = req.body;
     res.setHeader('Content-Type', 'application/json');
-
+    //console.log(postBody);
     let ispravniParametri = zahtjeviZavrsniUtils.provjeraParametaraDodajZahtjev(postBody);
     if (!ispravniParametri) res.send(JSON.stringify({
-        message: 'Neispravni parametri unutar body-a! Ocekivani format formatu [idTema, idStudent, idProfesor, odobreno]'
+        message: 'Neispravni parametri unutar body-a! Ocekivani format [idTema, idStudent, idProfesor, odobreno]'
     }))
     else {
         zahtjeviZavrsniUtils.dodajZahtjev(postBody, (err,tema)=> {
