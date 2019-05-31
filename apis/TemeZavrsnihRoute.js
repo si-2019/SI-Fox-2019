@@ -47,11 +47,11 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
             //if (res1.status != 200) greska = true;
             //else {
                 for(i in nizTema) {
-                    //if(i==0) console.log(res1.status);
+                    if(i==0) console.log(res1.status);
                     let id = nizTema[i].id;
                     let naziv = nizTema[i].naziv;
                     let opis = nizTema[i].opis;
-                // console.log(res1.data[i].id);
+                    console.log(res1.data[i].id);
                     rez = axios.get('http://localhost:31906/fox/teme/zahtjevi/'+id).then(
                         (res2) => {
                             let odobreno = "ne";
@@ -68,21 +68,25 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
                             }
                             return teme;                  
                         }
-                    ).catch((err) => {res.status(err.response.status); res.send(err.response.data)});
+                    ).catch((err) => {
+                        res.status(err.response.status); 
+                        res.send(err.response.data)
+                    });
                 }          
             //}
             rez.then((teme)=> {
                 //console.log(teme);
-                if (greska) {
-                    res.status(400);
-                    res.send(rez.data.message);
-                }
-                else {
-                    res.status(200);
-                    res.send(teme);
-                }
-            }).catch((err) => {res.status(err.response.status); res.send(err.response.data);});          
-        }).catch((err) => {res.status(err.response.status); res.send(err.response.data)});
+                res.status(200);
+                res.send(teme);
+            }).catch((err) => {
+                //console.log(err); console.log(err.response)
+                res.status(err.response.status); 
+                res.send(err.response.data)
+            });          
+        }).catch((err) => {
+            res.status(err.response.status); 
+            res.send(err.response.data) 
+        });
 });
 
 temeZavrsnihAPIRouter.post('/novaTema', (req, res) => {
