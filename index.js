@@ -62,6 +62,8 @@ const pocetnaStranicaAPIRouter = require('./apis/PocetnaStranicaRoute');
 app.use('/api/fox', pocetnaStranicaAPIRouter);
 const tabelaStudentiAPIRouter = require('./apis/TabelaStudentiRoute');
 app.use('/api/fox/tabelaStudenti', tabelaStudentiAPIRouter);
+const prisustvoAPIRouter = require('./apis/PrisustvoRoute');
+app.use('/api/fox/prisustvo',prisustvoAPIRouter);
 
 //------------Hardkodirani APIji-----------------------------------------
 

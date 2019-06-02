@@ -4,7 +4,19 @@ const prisustvoUtils = require('../utils/prisustvoUtils');
 
 //prikaz tabele
 
+//get studenata na predmetu sa podacima
+/*prisustvoRouter.get('/:idPredmeta', (req, res) => {
+    let idPredmeta = req.params.idPredmeta;
+    res.setHeader('Content-Type', 'application/json');
 
+    prisustvoUtils.getStudenti(idPredmeta, (err, studenti) => {
+        if (err)
+            res.send(JSON.stringify('Greska!'));
+        else
+            res.send(studenti);
+    });
+    
+});*/
 
 // Get bodova za prisustvo studenta na predmetu
 
@@ -32,7 +44,6 @@ prisustvoRouter.get('/bodovi', (req, res)=> {
 
 prisustvoRouter.put('/unosPredavanja', (req, res)=> {
     let postBody = req.body;
-    console.log(postBody);
     
     res.setHeader('Content-Type', 'application/json');
 
@@ -65,7 +76,6 @@ prisustvoRouter.put('/unosPredavanja', (req, res)=> {
 //put prisustva studenta na vjezbama
 prisustvoRouter.put('/unosVjezbe', (req, res)=> {
     let postBody = req.body;
-    console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
 
     let ispravniParametri = prisustvoUtils.provjeraParametara(postBody);
@@ -96,7 +106,6 @@ prisustvoRouter.put('/unosVjezbe', (req, res)=> {
 //put prisustva studenta na tutorijalima
 prisustvoRouter.put('/unosTutorijali', (req, res)=> {
     let postBody = req.body;
-    console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
 
     let ispravniParametri = prisustvoUtils.provjeraParametara(postBody);

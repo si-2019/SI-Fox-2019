@@ -44,8 +44,52 @@ const getBodoviPrisustvo = (idStudenta,idPredmeta, callback) => {
     });
     
 }
+/*const getStudenti = (idPredmeta, callback) => {
+
+    //db.
+    db.PrisustvoPredavanja.count({
+        where:{
+            idStudenta:idStudenta,
+            idPredmeta:idPredmeta,
+            prisutan:false
+        }
+    }).then(broj=>{
+        brojIzostanaka+=broj;
+        db.PrisustvoTutorijali.count({
+            where:{
+                idStudenta:idStudenta,
+                idPredmeta:idPredmeta,
+                prisutan:false
+            }
+        }).then(broj=>{
+
+            brojIzostanaka+=broj;
+            db.PrisustvoVjezbe.count({
+                where:{
+                    idStudenta:idStudenta,
+                    idPredmeta:idPredmeta,
+                    prisutan:false
+                }
+            }).then(broj=>{
+    
+                brojIzostanaka+=broj;
+                
+                console.log(brojIzostanaka);
+                if(brojIzostanaka>3){
+                    callback(null,{bodovi:0});
+                }
+                else{
+                    callback(null,{bodovi:10});
+                }
+            });
+            
+        });
+        
+    });
+    
+}*/
 const provjeraParametara = (postBody) => {
-    console.log(postBody);
+    
     if(!postBody['idStudenta'] || !postBody['idPredmeta'] || !postBody['brojSedmice']) return false;
     return true;
 }
@@ -139,7 +183,7 @@ const updateVjezbe = (body, callback) => {
         };
     })
 }
-const getStudenti = (callback) => {
+/*const getStudenti = (callback) => {
 
     db.Korisnik.findAll(
         {attributes: ['id','ime','prezime']},{
@@ -153,7 +197,7 @@ const getStudenti = (callback) => {
             callback(null,studenti);
         }
     });
-}
+}*/
 const addVjezbe = (postBody, callback) => {
 
     let prisustvo = {
@@ -332,7 +376,7 @@ module.exports = {
     addPredavanja,
     addVjezbe,
     addTutorijali,
-    getStudenti,
+    //getStudenti,
     updatePredavanja,
     updateVjezbe,
     updateTutorijali,
