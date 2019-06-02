@@ -56,7 +56,7 @@ prisustvoAPIRouter.get('', cors(), (req, res) => {
         );
         promise=Promise.all([r1, r2,r3]).then( (values)=> {
 
-        let student={id:id,ime:ime,indeks:indeks,predavanje:values[0],tutorijal:values[1],vjezbe:values[3]};
+        let student={id:id,ime:ime,indeks:indeks,predavanje:values[0],tutorijal:values[1],vjezbe:values[2]};
         tabela.push(student);
         return tabela;
     }).catch((err) => {
