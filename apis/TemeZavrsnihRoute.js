@@ -39,6 +39,7 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
     //'/api/fox/tabelaStudenti?_limit=100'
     let idPredmeta = req.params.idPredmeta;
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     axios.get('http://localhost:31906/fox/teme/'+idPredmeta)
     .then(
         (res1) => {
@@ -91,12 +92,14 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
 
 temeZavrsnihAPIRouter.post('/novaTema', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200);
-    //console.log(req.body);
+    console.log(req.body);
     naziv = req.body.naziv;
     opis = req.body.opis;
     idProfesora = req.body.idProfesora;
     idPredmeta = req.body.idPredmeta;
+
     axios.post('http://localhost:31906/fox/teme/novaTema', {
         "naziv": naziv,
         "opis": opis,
@@ -127,6 +130,7 @@ temeZavrsnihAPIRouter.put('/izmjeniTemu/:idTema', (req, res) => {
     naziv = req.body.naziv;
     opis = req.body.opis;
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     axios.put('http://localhost:31906/fox/teme/izmjeniTemu/'+idTema, {
         "naziv": naziv,
         "opis": opis
@@ -143,6 +147,7 @@ temeZavrsnihAPIRouter.delete('/izbrisiTemu/:idTema', (req, res) => {
     let idTema = req.params.idTema;
     let greska = false;
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200);
     p1=axios.delete('http://localhost:31906/fox/teme/izbrisiTemu/'+idTema).then((response) => {
        // console.log(response.status);

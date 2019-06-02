@@ -35,6 +35,13 @@ db.sequelize.sync()
 //npm run dev
 app.get('/', (req, res) => res.send('Hello World from FOX!'));
 
+
+app.use('/*', (req,res,next)=>{
+    res.header('Access-Control-Allow-Origin', '*'); //Posebno za samo nas frontend?!
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
 //---------------Mikroservisi--------------------------------------------------------------------
 const TemeZavrsnihRouter = require('./services/TemeZavrsnihRoute');
 //Definisanje rute za Teme Zavrsnih
