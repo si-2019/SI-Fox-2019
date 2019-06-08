@@ -71,6 +71,9 @@ const tabelaStudentiAPIRouter = require('./apis/TabelaStudentiRoute');
 app.use('/api/fox/tabelaStudenti', tabelaStudentiAPIRouter);
 const ocjeneIspitiRouter = require('./apis/OcjeneIspitiRouter');
 app.use('/api/fox/ocjene', ocjeneIspitiRouter);
+const bodoviIspitiRouter = require('./apis/BodoviIspitiRouter');
+app.use('/api/fox/ispiti', bodoviIspitiRouter);
+
 
 //------------Hardkodirani APIji-----------------------------------------
 
