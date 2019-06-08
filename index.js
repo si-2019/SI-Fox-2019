@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const http = require('http');
 const dotenv = require('dotenv');  // definisanje env varijabli
 dotenv.config();
 // postavljanje configa 
@@ -16,7 +17,7 @@ app.use(bodyParser.json());
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
-app.use('/api-docs',swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //database connection
 /*const db = require('./databaseConfig.js');  
@@ -26,17 +27,17 @@ db.connect(function(err) {
 });*/
 
 //database connection sa sequelize
-const db = require ('./models/db.js');
+const db = require('./models/db.js');
 db.sequelize.sync()
     .then(() => console.log("Connected!"))
-    .catch((err)=> console.log("Neuspjesno povezivanje"))
-    
+    .catch((err) => console.log("Neuspjesno povezivanje"))
+
 
 //npm run dev
 app.get('/', (req, res) => res.send('Hello World from FOX!'));
 
 
-app.use('/*', (req,res,next)=>{
+app.use('/*', (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*'); //Posebno za samo nas frontend?!
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -59,7 +60,7 @@ app.use('/fox/ocjene', PredmetStudentRouter);
 
 //Definisanje rute za prisustvo studenta na predmetu
 const PrisustvoRouter = require('./services/PrisustvoRoute');
-app.use('/fox/prisustvo',PrisustvoRouter);
+app.use('/fox/prisustvo', PrisustvoRouter);
 
 
 //---------------APIs--------------------------------------------------------------------
@@ -79,10 +80,10 @@ const studenti = [
         imePrezime: 'Neko Nekić',
         prisustvo: 10,
         zadace: 10,
-        ispiti : [
-            {naziv: 'I parcijalni ispit', bodovi: '15'},
-            {naziv: 'II parcijalni ispit', bodovi: '15'},
-            {naziv: 'Usmeni ispit', bodovi: '20'}
+        ispiti: [
+            { naziv: 'I parcijalni ispit', bodovi: '15' },
+            { naziv: 'II parcijalni ispit', bodovi: '15' },
+            { naziv: 'Usmeni ispit', bodovi: '20' }
         ],
         ukupno: 70,
         ocjena: 7
@@ -93,8 +94,8 @@ const studenti = [
         prisustvo: 0,
         zadace: 7,
         ispiti: [
-            {naziv: 'I parcijalni ispit', bodovi: '10'},
-            {naziv: 'II parcijalni ispit', bodovi: '7'}
+            { naziv: 'I parcijalni ispit', bodovi: '10' },
+            { naziv: 'II parcijalni ispit', bodovi: '7' }
         ],
         ukupno: 24,
         ocjena: 5
@@ -129,9 +130,9 @@ const profesori = [
 ];
 
 const ispiti = [
-    {naziv: 'I parcijalni ispit'},
-    {naziv: 'II parcijalni ispit'},
-    {naziv: 'Usmeni ispit'}
+    { naziv: 'I parcijalni ispit' },
+    { naziv: 'II parcijalni ispit' },
+    { naziv: 'Usmeni ispit' }
 ]
 
 /*app.get('/api/fox/tabelaStudenti', cors(), (req, res) => {
@@ -171,7 +172,7 @@ const grupe = [
         naziv: "Grupa 2"
     },
     {
-        id:3,
+        id: 3,
         naziv: "Grupa 3"
     }
 ]
@@ -191,17 +192,39 @@ app.get('/api/fox/grupe/:idPredmeta', cors(), (req, res) => {
 
 //endpointi za ocjene
 
-function getStudentFromIndex(index) {
-    let student = studenti.find(s => s.index === index);
-    return `${student.imePrezime}, ${student.index}`;
+function getAllStudents(endpoint) {
+    return new Promise((resolve, reject) => {
+        http.get(endpoint, (resp) => {
+            let data = '';
+
+            resp.on('data', (chunk) => {
+                data += chunk;
+            });
+
+            resp.on('end', () => {
+                resolve(JSON.parse(data));
+            });
+
+        }).on("error", (err) => {
+            console.log("Error: " + err.message);
+        });
+    });
 }
 
+// rezultat je objekat {ime: "ime", indeks: "indeks"}
 app.get('/api/fox/ocjene/:index', cors(), (req, res) => {
-    console.log(req.params);
-    let index = req.params.index;
-    let stduent = getStudentFromIndex(parseInt(index));
-    res.status(200).json(stduent);
+    getAllStudents("http://localhost:31901/api/korisnik/getAllStudents")
+        .then(students => {
+            const student = students.find(s => s.indeks === req.params.index);
+            res.status(200).json({
+                ime: student.ime + ' ' + student.prezime,
+                indeks: student.indeks
+            });
+        });
 });
+
+
+
 
 //profesor login
 
