@@ -60,6 +60,9 @@ app.use('/fox/ocjene', PredmetStudentRouter);
 //Definisanje rute za prisustvo studenta na predmetu
 const PrisustvoRouter = require('./services/PrisustvoRoute');
 app.use('/fox/prisustvo',PrisustvoRouter);
+//Definisanje rute za prisustvo studenta na predmetu
+const studentInfoRouter = require('./services/StudentInfoRoute');
+app.use('/fox/getStudentInfo', studentInfoRouter);
 
 
 //---------------APIs--------------------------------------------------------------------

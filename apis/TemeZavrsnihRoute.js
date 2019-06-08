@@ -45,36 +45,43 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
         (res1) => {
             let nizTema = res1.data; //id, naziv, opis teme 
             var teme = [];          
-            //if (res1.status != 200) greska = true;
-            //else {
-                for(i in nizTema) {
-                    //if(i==0) console.log(res1.status);
-                    let id = nizTema[i].id;
-                    let naziv = nizTema[i].naziv;
-                    let opis = nizTema[i].opis;
-                   // console.log(res1.data[i].id);
-                    rez = axios.get('http://localhost:31906/fox/teme/zahtjevi/'+id).then(
-                        (res2) => {
-                            let odobreno = "ne";
-                            if (res2.data.odobreno == '1') {
-                                odobreno = "da";
-                            }
-                            //console.log(res2.data.idStudent); //Poziv apija idStudent -> ime i prezime studenta
-                            tema = kreirajTemu(id, naziv, opis, odobreno, res2.data.idStudent);
+            for(i in nizTema) {
+                let id = nizTema[i].id;
+                let naziv = nizTema[i].naziv;
+                let opis = nizTema[i].opis;
+                // console.log(res1.data[i].id);
+                rez = axios.get('http://localhost:31906/fox/teme/zahtjevi/'+id).then(
+                    (res2) => {
+                        let odobreno = "ne";
+                        if (res2.data.odobreno == '1') {
+                            odobreno = "da"; //trazimo studenta
+                            axios.get('http://localhost:31906/fox/getStudentInfo/'+res2.data.idStudent).then(
+                                (res3) => {
+                                    let student = res3.data.ime + " " + res3.data.prezime;
+                                    tema = kreirajTemu(id, naziv, opis, odobreno, student);
+                                    teme.push(tema); 
+                                }
+                            )
+                        }
+                        else {
+                                //console.log(res2.data.idStudent); //Poziv apija idStudent -> ime i prezime studenta
+                            tema = kreirajTemu(id, naziv, opis, odobreno, "");
                             //console.log(res2);
                             teme.push(tema); 
                             if (res2.status != 200) {
                                 res.status(400); 
                                 res.send(res2.data.message);
-                            }
-                            return teme;                  
+                            } 
+                            
                         }
-                    ).catch((err) => {
-                        res.status(err.response.status); 
-                        res.send(err.response.data)
-                    });
-                }          
-            //}
+                        return teme;
+                                        
+                    }
+                ).catch((err) => {
+                    res.status(err.response.status); 
+                    res.send(err.response.data)
+                });
+            }          
             rez.then((teme)=> {
                 //console.log(teme);
                 res.status(200);
