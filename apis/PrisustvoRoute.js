@@ -71,7 +71,7 @@ prisustvoAPIRouter.get('', cors(), (req, res) => {
         
     });  
 });
-prisustvoAPIRouter.put('/azurirajPredavanje', cors(), (req, res) => {
+/*prisustvoAPIRouter.put('/azurirajPredavanje', cors(), (req, res) => {
     
     let status=req.query.status;
     let promises=[];
@@ -192,7 +192,7 @@ prisustvoAPIRouter.put('/azurirajVjezbe', cors(), (req, res) => {
         });
         };
     });
-});
+});*/
 prisustvoAPIRouter.put('/unosIzmjena', cors(), (req, res) => {
     let tabela=req.body;
     let idPredmeta=req.query.idPredmeta;
