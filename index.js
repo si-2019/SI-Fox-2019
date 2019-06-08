@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const http = require('http');
 const dotenv = require('dotenv');  // definisanje env varijabli
 dotenv.config();
 // postavljanje configa 
@@ -70,6 +69,8 @@ const pocetnaStranicaAPIRouter = require('./apis/PocetnaStranicaRoute');
 app.use('/api/fox', pocetnaStranicaAPIRouter);
 const tabelaStudentiAPIRouter = require('./apis/TabelaStudentiRoute');
 app.use('/api/fox/tabelaStudenti', tabelaStudentiAPIRouter);
+const ocjeneIspitiRouter = require('./apis/OcjeneIspitiRouter');
+app.use('/api/fox/ocjene', ocjeneIspitiRouter);
 
 //------------Hardkodirani APIji-----------------------------------------
 
@@ -188,43 +189,6 @@ app.get('/api/fox/grupe/:idPredmeta', cors(), (req, res) => {
     console.log(req.params);
     res.json(grupe);
 });*/
-
-
-//endpointi za ocjene
-
-function getAllStudents(endpoint) {
-    return new Promise((resolve, reject) => {
-        http.get(endpoint, (resp) => {
-            let data = '';
-
-            resp.on('data', (chunk) => {
-                data += chunk;
-            });
-
-            resp.on('end', () => {
-                resolve(JSON.parse(data));
-            });
-
-        }).on("error", (err) => {
-            console.log("Error: " + err.message);
-        });
-    });
-}
-
-// rezultat je objekat {ime: "ime", indeks: "indeks"}
-app.get('/api/fox/ocjene/:index', cors(), (req, res) => {
-    getAllStudents("http://localhost:31901/api/korisnik/getAllStudents")
-        .then(students => {
-            const student = students.find(s => s.indeks === req.params.index);
-            res.status(200).json({
-                ime: student.ime + ' ' + student.prezime,
-                indeks: student.indeks
-            });
-        });
-});
-
-
-
 
 //profesor login
 
