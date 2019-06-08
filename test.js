@@ -50,17 +50,31 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
             console.log("Nazivi: "); console.log(nazivi);
             console.log("Opisi: "); console.log(opisi);
             axios.all(promises).then(function(results) {
-               promises2 = [];
+               
                // console.log(promises.length);
                results.forEach(function(response) {
                     if(response && response.data) {
-                        let ids = [];
                         // console.log(response.data);
                         //Poziv apija - sve spremno za ubacivanje teme
                         let odobreno = "ne";
                         if (response.data.odobreno == '1') {
                             odobreno = "da"; //trazi
-                            promises2.push(axios.get('http://localhost:31906/fox/getStudentInfo/'+response.data.idStudent).then(ids.push(response.data.idTema)));
+                            axios.get('http://localhost:31906/fox/getStudentInfo/'+response.data.idStudent).then(
+                                (res3) => {
+                                    try{
+                                        let student = res3.data.ime + " " + res3.data.prezime;
+                                        let id = response.data.idTema;
+                                        let naziv = vratiNaziv(nazivi, id), opis = vratiOpis(opisi, id);
+                                        tema = kreirajTemu(id, naziv, opis, odobreno, student);
+                                        teme.push(tema); 
+                                        console.log(tema);
+                                    }
+                                    catch(err) {
+
+                                    }  
+                                }  
+                            )
+                         
                         }
                         else {
                             try {
@@ -74,23 +88,6 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
 
                             };
                         } 
-
-                        axios.all(promises2).then(function(results) {
-                            //console.log(results.data);
-                            results.forEach(function(response) {
-                                try{
-                                    let student = response.data.ime + " " + response.data.prezime;
-                                    let id = ids[0]; //nema :(
-                                    let naziv = vratiNaziv(nazivi, id), opis = vratiOpis(opisi, id);
-                                    tema = kreirajTemu(id, naziv, opis, odobreno, student);
-                                    teme.push(tema); 
-                                    console.log(tema);
-                                }
-                                catch(err) {
-    
-                                }      
-                            });                          
-                        });
                     }
                     else console.log("Greska");
                    

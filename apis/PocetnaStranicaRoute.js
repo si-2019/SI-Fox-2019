@@ -44,7 +44,7 @@ pocetnaStranicaAPIRouter.get('/predmeti/:idKorisnika', cors(), (req, res) => {
         }
     })
     .then((resPredmeti) => {
-        console.log(resPredmeti.data);
+        //console.log(resPredmeti.data);
         let listaPredmeta = [];
         for (i in resPredmeti.data) {
             listaPredmeta.push({
