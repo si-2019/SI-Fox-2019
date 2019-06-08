@@ -54,6 +54,10 @@ app.use('/fox/ocjene', PredmetStudentRouter);
 const PrisustvoRouter = require('./services/PrisustvoRoute');
 app.use('/fox/prisustvo',PrisustvoRouter);
 
+//definisanje rute za podatke o studentima na predmetu
+const StudentiRouter = require('./services/StudentiRoute');
+app.use('/fox/studenti',StudentiRouter);
+
 
 //---------------APIs--------------------------------------------------------------------
 const temeZavrsnihAPIRouter = require('./apis/TemeZavrsnihRoute');

@@ -183,21 +183,7 @@ const updateVjezbe = (body, callback) => {
         };
     })
 }
-/*const getStudenti = (callback) => {
 
-    db.Korisnik.findAll(
-        {attributes: ['id','ime','prezime']},{
-        where: {
-            idUloga: 1
-        }
-        
-    }).then((studenti) => {
-        if (!studenti || studenti.length==0) callback(true); //Greska
-        else {
-            callback(null,studenti);
-        }
-    });
-}*/
 const addVjezbe = (postBody, callback) => {
 
     let prisustvo = {

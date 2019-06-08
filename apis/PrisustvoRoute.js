@@ -12,7 +12,7 @@ let studenti=[
     indeks:12345
 },{
     idPredmeta:4,
-    idStudenta:1,
+    idStudenta:2,
     ime:"Neko Nekic",
     indeks:12346
 }];
