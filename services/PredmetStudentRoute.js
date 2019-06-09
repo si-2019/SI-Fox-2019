@@ -28,7 +28,7 @@ predmetStudentRouter.post('/ocjena', (req, res) => {
             if (err)
                 res.send(JSON.stringify('Greska? Ne postoji student/predmet ili neispravna akademska godina'));
             else
-                res.send(JSON.stringify('Uspjesno dodana nova tema!'));
+                res.send(JSON.stringify('Uspjesno dodana nova ocjena!'));
         });
     }
 });
