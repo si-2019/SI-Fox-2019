@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const swaggerDocument = YAML.load('./swagger.yaml');
-app.use('/api-docs',swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //database connection
 /*const db = require('./databaseConfig.js');  
@@ -26,17 +26,17 @@ db.connect(function(err) {
 });*/
 
 //database connection sa sequelize
-const db = require ('./models/db.js');
+const db = require('./models/db.js');
 db.sequelize.sync()
     .then(() => console.log("Connected!"))
-    .catch((err)=> console.log("Neuspjesno povezivanje"))
-    
+    .catch((err) => console.log("Neuspjesno povezivanje"))
+
 
 //npm run dev
 app.get('/', (req, res) => res.send('Hello World from FOX!'));
 
 
-app.use('/*', (req,res,next)=>{
+app.use('/*', (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*'); //Posebno za samo nas frontend?!
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -63,6 +63,11 @@ app.use('/fox/prisustvo',PrisustvoRouter);
 //Definisanje rute za prisustvo studenta na predmetu
 const studentInfoRouter = require('./services/StudentInfoRoute');
 app.use('/fox/getStudentInfo', studentInfoRouter);
+app.use('/fox/prisustvo', PrisustvoRouter);
+
+//definisanje rute za podatke o studentima na predmetu
+const StudentiRouter = require('./services/StudentiRoute');
+app.use('/fox/studenti',StudentiRouter);
 
 
 //---------------APIs--------------------------------------------------------------------
@@ -72,6 +77,14 @@ const pocetnaStranicaAPIRouter = require('./apis/PocetnaStranicaRoute');
 app.use('/api/fox', pocetnaStranicaAPIRouter);
 const tabelaStudentiAPIRouter = require('./apis/TabelaStudentiRoute');
 app.use('/api/fox/tabelaStudenti', tabelaStudentiAPIRouter);
+const prisustvoAPIRouter = require('./apis/PrisustvoRoute');
+app.use('/api/fox/prisustvo',prisustvoAPIRouter);
+const ocjeneIspitiRouter = require('./apis/OcjeneIspitiRouter');
+app.use('/api/fox/ocjene', ocjeneIspitiRouter);
+const bodoviIspitiRouter = require('./apis/BodoviIspitiRouter');
+app.use('/api/fox/ispiti', bodoviIspitiRouter);
+
+
 
 //------------Hardkodirani APIji-----------------------------------------
 
@@ -82,10 +95,10 @@ const studenti = [
         imePrezime: 'Neko Nekić',
         prisustvo: 10,
         zadace: 10,
-        ispiti : [
-            {naziv: 'I parcijalni ispit', bodovi: '15'},
-            {naziv: 'II parcijalni ispit', bodovi: '15'},
-            {naziv: 'Usmeni ispit', bodovi: '20'}
+        ispiti: [
+            { naziv: 'I parcijalni ispit', bodovi: '15' },
+            { naziv: 'II parcijalni ispit', bodovi: '15' },
+            { naziv: 'Usmeni ispit', bodovi: '20' }
         ],
         ukupno: 70,
         ocjena: 7
@@ -96,8 +109,8 @@ const studenti = [
         prisustvo: 0,
         zadace: 7,
         ispiti: [
-            {naziv: 'I parcijalni ispit', bodovi: '10'},
-            {naziv: 'II parcijalni ispit', bodovi: '7'}
+            { naziv: 'I parcijalni ispit', bodovi: '10' },
+            { naziv: 'II parcijalni ispit', bodovi: '7' }
         ],
         ukupno: 24,
         ocjena: 5
@@ -131,22 +144,6 @@ const profesori = [
     }
 ];
 
-const ispiti = [
-    {naziv: 'I parcijalni ispit'},
-    {naziv: 'II parcijalni ispit'},
-    {naziv: 'Usmeni ispit'}
-]
-
-/*app.get('/api/fox/tabelaStudenti', cors(), (req, res) => {
-    //'/api/fox/tabelaStudenti?_limit=100'
-    res.json(studenti);
-});
-
-app.get('/api/fox/tabelaStudenti/ispiti', cors(), (req, res) => {
-    //'/api/fox/tabelaStudenti?_limit=100'
-    res.json(ispiti);
-});*/
-
 
 //endpointi za ocjene
 
@@ -161,6 +158,7 @@ app.get('/api/fox/ocjene/:index', cors(), (req, res) => {
     let stduent = getStudentFromIndex(parseInt(index));
     res.status(200).json(stduent);
 });
+
 
 //profesor login
 
