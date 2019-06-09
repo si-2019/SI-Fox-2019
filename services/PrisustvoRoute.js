@@ -2,8 +2,6 @@ const express = require('express');
 const prisustvoRouter = express.Router();
 const prisustvoUtils = require('../utils/prisustvoUtils');
 
-//prikaz tabele
-
 
 
 // Get bodova za prisustvo studenta na predmetu
@@ -32,7 +30,6 @@ prisustvoRouter.get('/bodovi', (req, res)=> {
 
 prisustvoRouter.put('/unosPredavanja', (req, res)=> {
     let postBody = req.body;
-    console.log(postBody);
     
     res.setHeader('Content-Type', 'application/json');
 
@@ -65,7 +62,6 @@ prisustvoRouter.put('/unosPredavanja', (req, res)=> {
 //put prisustva studenta na vjezbama
 prisustvoRouter.put('/unosVjezbe', (req, res)=> {
     let postBody = req.body;
-    console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
 
     let ispravniParametri = prisustvoUtils.provjeraParametara(postBody);
@@ -96,7 +92,6 @@ prisustvoRouter.put('/unosVjezbe', (req, res)=> {
 //put prisustva studenta na tutorijalima
 prisustvoRouter.put('/unosTutorijali', (req, res)=> {
     let postBody = req.body;
-    console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
 
     let ispravniParametri = prisustvoUtils.provjeraParametara(postBody);
@@ -128,7 +123,7 @@ prisustvoRouter.put('/unosTutorijali', (req, res)=> {
 //post prisustva studenta na predavanju
 prisustvoRouter.post('/addPredavanja', (req, res)=> {
     let postBody = req.body;
-    console.log(postBody);
+    //console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
 
     let ispravniParametri = prisustvoUtils.provjeraParametara(postBody);
@@ -159,7 +154,7 @@ prisustvoRouter.post('/addPredavanja', (req, res)=> {
 //post prisustva studenta na vjezbama
 prisustvoRouter.post('/addVjezbe', (req, res)=> {
     let postBody = req.body;
-    console.log(postBody);
+    //console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
 
     let ispravniParametri = prisustvoUtils.provjeraParametara(postBody);
@@ -190,7 +185,7 @@ prisustvoRouter.post('/addVjezbe', (req, res)=> {
 //post prisustva studenta na tutorijalima
 prisustvoRouter.post('/addTutorijali', (req, res)=> {
     let postBody = req.body;
-    console.log(postBody);
+    //console.log(postBody);
     res.setHeader('Content-Type', 'application/json');
 
     let ispravniParametri = prisustvoUtils.provjeraParametara(postBody);

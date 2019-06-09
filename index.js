@@ -61,6 +61,10 @@ app.use('/fox/ocjene', PredmetStudentRouter);
 const PrisustvoRouter = require('./services/PrisustvoRoute');
 app.use('/fox/prisustvo', PrisustvoRouter);
 
+//definisanje rute za podatke o studentima na predmetu
+const StudentiRouter = require('./services/StudentiRoute');
+app.use('/fox/studenti',StudentiRouter);
+
 
 //---------------APIs--------------------------------------------------------------------
 const temeZavrsnihAPIRouter = require('./apis/TemeZavrsnihRoute');
@@ -69,10 +73,13 @@ const pocetnaStranicaAPIRouter = require('./apis/PocetnaStranicaRoute');
 app.use('/api/fox', pocetnaStranicaAPIRouter);
 const tabelaStudentiAPIRouter = require('./apis/TabelaStudentiRoute');
 app.use('/api/fox/tabelaStudenti', tabelaStudentiAPIRouter);
+const prisustvoAPIRouter = require('./apis/PrisustvoRoute');
+app.use('/api/fox/prisustvo',prisustvoAPIRouter);
 const ocjeneIspitiRouter = require('./apis/OcjeneIspitiRouter');
 app.use('/api/fox/ocjene', ocjeneIspitiRouter);
 const bodoviIspitiRouter = require('./apis/BodoviIspitiRouter');
 app.use('/api/fox/ispiti', bodoviIspitiRouter);
+
 
 
 //------------Hardkodirani APIji-----------------------------------------

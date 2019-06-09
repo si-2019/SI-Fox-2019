@@ -44,8 +44,52 @@ const getBodoviPrisustvo = (idStudenta,idPredmeta, callback) => {
     });
     
 }
+/*const getStudenti = (idPredmeta, callback) => {
+
+    //db.
+    db.PrisustvoPredavanja.count({
+        where:{
+            idStudenta:idStudenta,
+            idPredmeta:idPredmeta,
+            prisutan:false
+        }
+    }).then(broj=>{
+        brojIzostanaka+=broj;
+        db.PrisustvoTutorijali.count({
+            where:{
+                idStudenta:idStudenta,
+                idPredmeta:idPredmeta,
+                prisutan:false
+            }
+        }).then(broj=>{
+
+            brojIzostanaka+=broj;
+            db.PrisustvoVjezbe.count({
+                where:{
+                    idStudenta:idStudenta,
+                    idPredmeta:idPredmeta,
+                    prisutan:false
+                }
+            }).then(broj=>{
+    
+                brojIzostanaka+=broj;
+                
+                console.log(brojIzostanaka);
+                if(brojIzostanaka>3){
+                    callback(null,{bodovi:0});
+                }
+                else{
+                    callback(null,{bodovi:10});
+                }
+            });
+            
+        });
+        
+    });
+    
+}*/
 const provjeraParametara = (postBody) => {
-    console.log(postBody);
+    
     if(!postBody['idStudenta'] || !postBody['idPredmeta'] || !postBody['brojSedmice']) return false;
     return true;
 }
@@ -74,11 +118,23 @@ const addPredavanja = (postBody, callback) => {
             }).then((student) => {
                 if(!student) callback(true); //Greska
                 else {
-                    db.PrisustvoPredavanja.create(prisustvo)
-                    .then(predavanje =>{
+                    //provjera postoji li vec
+                    db.PrisustvoPredavanja.count({
+                        where:{
+                            idStudenta:postBody['idStudenta']
+                        }
+                    }).then(broj=>{
+                        if(broj==0){
+                            db.PrisustvoPredavanja.create(prisustvo).then(predavanje =>{
                         if (!predavanje) callback(true); //Greska
                         else callback(null, predavanje);
                     });
+                        }
+                        else callback(null, broj);
+                        
+                    });
+            
+                    
                 }
             });
            
@@ -139,21 +195,7 @@ const updateVjezbe = (body, callback) => {
         };
     })
 }
-const getStudenti = (callback) => {
 
-    db.Korisnik.findAll(
-        {attributes: ['id','ime','prezime']},{
-        where: {
-            idUloga: 1
-        }
-        
-    }).then((studenti) => {
-        if (!studenti || studenti.length==0) callback(true); //Greska
-        else {
-            callback(null,studenti);
-        }
-    });
-}
 const addVjezbe = (postBody, callback) => {
 
     let prisustvo = {
@@ -178,11 +220,22 @@ const addVjezbe = (postBody, callback) => {
             }).then((student) => {
                 if(!student) callback(true); //Greska
                 else {
-                    db.PrisustvoVjezbe.create(prisustvo)
-                    .then(vjezbe =>{
-                        if (!vjezbe) callback(true); //Greska
-                        else callback(null, vjezbe);
+                    db.PrisustvoVjezbe.count({
+                        where:{
+                            idStudenta:postBody['idStudenta']
+                        }
+                    }).then(broj=>{
+                        if(broj==0){
+                            db.PrisustvoVjezbe.create(prisustvo).then(vjezbe =>{
+                                if (!vjezbe) callback(true); //Greska
+                                else callback(null, vjezbe);
+                            });
+                    
+                        }
+                        else callback(null, broj);
+                        
                     });
+                    
                 }
             });
            
@@ -213,11 +266,23 @@ const addTutorijali = (postBody, callback) => {
             }).then((student) => {
                 if(!student) callback(true); //Greska
                 else {
-                    db.PrisustvoTutorijali.create(prisustvo)
-                    .then(tutorijal =>{
-                        if (!tutorijal) callback(true); //Greska
-                        else callback(null, tutorijal);
+                    db.PrisustvoTutorijali.count({
+                        where:{
+                            idStudenta:postBody['idStudenta']
+                        }
+                    }).then(broj=>{
+                        if(broj==0){
+                            db.PrisustvoTutorijali.create(prisustvo)
+                            .then(tutorijal =>{
+                                if (!tutorijal) callback(true); //Greska
+                                else callback(null, tutorijal);
+                            });
+                    
+                        }
+                        else callback(null, broj);
+                        
                     });
+                    
                 }
             });
            
@@ -332,7 +397,7 @@ module.exports = {
     addPredavanja,
     addVjezbe,
     addTutorijali,
-    getStudenti,
+    //getStudenti,
     updatePredavanja,
     updateVjezbe,
     updateTutorijali,
