@@ -29,7 +29,7 @@ function getIspiti(endpoint) {
 // prikaz u padajucem meniju)
 // GET na /api/fox/ispiti/:idPredmet
 router.get('/:idPredmeta', cors(), (req, res) => {
-    getIspiti(`localhost:31903/kreiraniIspiti/predmet/${req.params.idPredmet}`)
+    getIspiti(`http://localhost:31903/kreiraniIspiti/predmet/${req.params.idPredmet}`)
         .then(ispiti => {
             let ispitiTipDatum = [];
             ispiti.forEach(ispit => {
