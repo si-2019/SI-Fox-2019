@@ -36,13 +36,33 @@ const grupe = [
 ]
 
 pocetnaStranicaAPIRouter.get('/predmeti/:idKorisnika', cors(), (req, res) => {
-    //'/api/fox/tabelaStudenti?_limit=100'
-    console.log(req.params);
-    res.json(predmeti);
+    console.log(req.params.idKorisnika);
+    axios.get('http://localhost:31901/api/korisnik/getPredmetiAsisProf/', {
+        params: {
+            idKorisnik: req.params.idKorisnika, 
+            Uloga: 3
+        }
+    })
+    .then((resPredmeti) => {
+        //console.log(resPredmeti.data);
+        let listaPredmeta = [];
+        for (i in resPredmeti.data) {
+            listaPredmeta.push({
+                "id": resPredmeti.data[i].id,
+                "naziv" : resPredmeti.data[i].naziv,
+                "opis": resPredmeti.data[i].opis
+            });
+        }
+
+        res.send(listaPredmeta);
+    })
+    .catch((err) => {
+        console.log(err.message);
+        res.json(predmeti);
+    });
 });
 
 pocetnaStranicaAPIRouter.get('/grupe/:idPredmeta', cors(), (req, res) => {
-    //'/api/fox/tabelaStudenti?_limit=100'
     console.log(req.params);
     res.json(grupe);
 });

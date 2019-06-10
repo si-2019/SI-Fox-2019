@@ -5,54 +5,22 @@ const cors = require('cors');
 
 
 //Pomocne funkcije
-const kreirajTemu = (id, naziv, opis, odobrena, student) => {
-    return {id: id, naziv: naziv, opis: opis, odobrena: odobrena, student: student}
+const kreirajTemu = (id, naziv, opis, odabrana, student) => {
+    return {id: id, naziv: naziv, opis: opis, odabrana: odabrana, student: student}
 }
 
-const azurirajOdobrena = (id, teme) => {
-    // console.log("teme poslane");
-    // console.log(teme);
-    let i;
-    for (i=0; i<teme.length; i++) {
-        if(teme[i].id == id) {
-            teme[i].odobrena = "da";
-            // console.log("azuriranje odobrena");
-            // console.log(teme);
-            break;
-        }
+const vratiNaziv = (nazivi, id) => {
+    for(naziv in nazivi) {
+        if (naziv.id == id) return naziv.naziv;
     }
-    return teme;
+    return "";
 }
 
-const azurirajStudent = (id, teme, student) => {
-    var i;
-    // console.log(id);
-    // console.log("poslane teme");
-    // console.log(student);
-    // console.log(teme);
-    for (i=0; i<teme.length; i++) {
-        if(teme[i].student == id) {
-            teme[i].student = student;
-            // console.log("azuriranje studenta");
-            // console.log(teme);
-            break;
-        }
+const vratiOpis = (opisi, id) => {
+    for(opis in opisi) {
+        if (opis.id == id) return opis.opis;
     }
-    return teme;
-}
-
-const upisiStudent = (id, teme, idStudenta) => {
-    var i;
-
-    for (i=0; i<teme.length; i++) {
-        if(teme[i].id == id) {
-            teme[i].student = idStudenta;
-            // console.log("azuriranje studenta");
-            // console.log(teme);
-            break;
-        }
-    }
-    return teme;
+    return "";
 }
 
 //Get teme zavrsnih na predmetu
@@ -66,45 +34,72 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
         (res1) => {
             let nizTema = res1.data; //id, naziv, opis teme 
             var teme = [], 
+                nazivi = [], 
+                opisi = [],
                 promises = [];
+
             for(i in nizTema) {
                 let id = nizTema[i].id;
-                teme.push(kreirajTemu(id, nizTema[i].naziv, nizTema[i].opis, "ne", ""));
+                let naziv = {"id": id, "naziv": nizTema[i].naziv};
+                nazivi.push(naziv);
+                let opis = {"id": id, "opis": nizTema[i].opis};
+                opisi.push(opis);
+                //console.log(res1.data[i].id);
                 promises.push(axios.get('http://localhost:31906/fox/teme/zahtjevi/'+id));     
             } 
+            console.log("Nazivi: "); console.log(nazivi);
+            console.log("Opisi: "); console.log(opisi);
             axios.all(promises).then(function(results) {
-                promises2 = [];
-                results.forEach(function(response) {
-                    if(response.data) {
-                        // console.log("Zahtjevi: "); console.log(response.data);
-                        //Poziv apija - sve spremno za ubacivanje teme            
+               
+               // console.log(promises.length);
+               results.forEach(function(response) {
+                    if(response && response.data) {
+                        // console.log(response.data);
+                        //Poziv apija - sve spremno za ubacivanje teme
+                        let odobreno = "ne";
                         if (response.data.odobreno == '1') {
-                            // console.log("poziv");
-                            teme = azurirajOdobrena(response.data.idTema, teme);
-                            teme = upisiStudent(response.data.idTema, teme, response.data.idStudent);
-                            promises2.push(axios.get('http://localhost:31906/fox/getStudentInfo/'+response.data.idStudent));
+                            odobreno = "da"; //trazi
+                            axios.get('http://localhost:31906/fox/getStudentInfo/'+response.data.idStudent).then(
+                                (res3) => {
+                                    try{
+                                        let student = res3.data.ime + " " + res3.data.prezime;
+                                        let id = response.data.idTema;
+                                        let naziv = vratiNaziv(nazivi, id), opis = vratiOpis(opisi, id);
+                                        tema = kreirajTemu(id, naziv, opis, odobreno, student);
+                                        teme.push(tema); 
+                                        console.log(tema);
+                                    }
+                                    catch(err) {
+
+                                    }  
+                                }  
+                            )
+                         
                         }
-                        
+                        else {
+                            try {
+                                let id = response.data.idTema;
+                                let naziv = vratiNaziv(nazivi, id), opis = vratiOpis(opisi, id);                              
+                                tema = kreirajTemu(id, naziv, opis, odobreno, "");
+                                console.log(tema);
+                                teme.push(tema); 
+                            }
+                            catch(err) {
+
+                            };
+                        } 
                     }
-                    else console.log("Greska");   
-                });
-                axios.all(promises2).then(function(results) {
-                    results.forEach(function(response) {
-                        let student = response.data.ime + " " + response.data.prezime;
-                        console.log("student");
-                        console.log(response.data);
-                        teme = azurirajStudent(response.data.id, teme, student);    
-                    });                          
-                }).then(()=> {
-                   // console.log("Konacno: "); console.log(teme);
-                    res.send(teme);
-                });
-            })         
-        })
-        .catch((err) => {
-            res.status(400); 
-            console.log(err);
-            res.send(JSON.stringify("Doslo je do greske!"));
+                    else console.log("Greska");
+                   
+               })
+            }).then(() => {
+                console.log(teme.length);
+                res.send(teme); 
+            });
+              
+        }).catch((err) => {
+            res.status(err.response.status); 
+            res.send(err.response.data) 
         });
 });
 

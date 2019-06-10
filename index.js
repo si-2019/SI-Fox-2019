@@ -6,7 +6,7 @@ dotenv.config();
 
 // init express
 const app = express();
-const port = process.env.port || 31906;
+const port = process.env.PORT || 31906;
 const cors = require('cors');
 
 //Body parser
@@ -59,6 +59,10 @@ app.use('/fox/ocjene', PredmetStudentRouter);
 
 //Definisanje rute za prisustvo studenta na predmetu
 const PrisustvoRouter = require('./services/PrisustvoRoute');
+app.use('/fox/prisustvo',PrisustvoRouter);
+//Definisanje rute za prisustvo studenta na predmetu
+const studentInfoRouter = require('./services/StudentInfoRoute');
+app.use('/fox/getStudentInfo', studentInfoRouter);
 app.use('/fox/prisustvo', PrisustvoRouter);
 
 //definisanje rute za podatke o studentima na predmetu
@@ -140,65 +144,21 @@ const profesori = [
     }
 ];
 
-const ispiti = [
-    { naziv: 'I parcijalni ispit' },
-    { naziv: 'II parcijalni ispit' },
-    { naziv: 'Usmeni ispit' }
-]
 
-/*app.get('/api/fox/tabelaStudenti', cors(), (req, res) => {
-    //'/api/fox/tabelaStudenti?_limit=100'
-    res.json(studenti);
+//endpointi za ocjene
+
+function getStudentFromIndex(index) {
+    let student = studenti.find(s => s.index === index);
+    return `${student.imePrezime}, ${student.index}`;
+}
+
+app.get('/api/fox/ocjene/:index', cors(), (req, res) => {
+    console.log(req.params);
+    let index = req.params.index;
+    let stduent = getStudentFromIndex(parseInt(index));
+    res.status(200).json(stduent);
 });
 
-app.get('/api/fox/tabelaStudenti/ispiti', cors(), (req, res) => {
-    //'/api/fox/tabelaStudenti?_limit=100'
-    res.json(ispiti);
-});*/
-
-//APIji za početnu stranicu
-
-const predmeti = [
-    {
-        id: 1,
-        naziv: "Tehnike programiranja"
-    },
-    {
-        id: 2,
-        naziv: "Numerički algoritmi"
-    },
-    {
-        id: 3,
-        naziv: "Diskretna matematika"
-    }
-]
-
-const grupe = [
-    {
-        id: 1,
-        naziv: "Grupa 1"
-    },
-    {
-        id: 2,
-        naziv: "Grupa 2"
-    },
-    {
-        id: 3,
-        naziv: "Grupa 3"
-    }
-]
-
-/*app.get('/api/fox/predmeti/:idKorisnika', cors(), (req, res) => {
-    //'/api/fox/tabelaStudenti?_limit=100'
-    console.log(req.params);
-    res.json(predmeti);
-});
-
-app.get('/api/fox/grupe/:idPredmeta', cors(), (req, res) => {
-    //'/api/fox/tabelaStudenti?_limit=100'
-    console.log(req.params);
-    res.json(grupe);
-});*/
 
 //profesor login
 
