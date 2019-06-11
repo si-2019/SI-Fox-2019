@@ -121,7 +121,9 @@ const addPredavanja = (postBody, callback) => {
                     //provjera postoji li vec
                     db.PrisustvoPredavanja.count({
                         where:{
-                            idStudenta:postBody['idStudenta']
+                            idStudenta:postBody['idStudenta'],
+                            idPredmeta:postBody['idPredmeta'],
+                            brojSedmice:postBody['brojSedmice']
                         }
                     }).then(broj=>{
                         if(broj==0){
@@ -222,7 +224,9 @@ const addVjezbe = (postBody, callback) => {
                 else {
                     db.PrisustvoVjezbe.count({
                         where:{
-                            idStudenta:postBody['idStudenta']
+                            idStudenta:postBody['idStudenta'],
+                            idPredmeta:postBody['idPredmeta'],
+                            brojSedmice:postBody['brojSedmice']
                         }
                     }).then(broj=>{
                         if(broj==0){
@@ -268,7 +272,9 @@ const addTutorijali = (postBody, callback) => {
                 else {
                     db.PrisustvoTutorijali.count({
                         where:{
-                            idStudenta:postBody['idStudenta']
+                            idStudenta:postBody['idStudenta'],
+                            idPredmeta:postBody['idPredmeta'],
+                            brojSedmice:postBody['brojSedmice']
                         }
                     }).then(broj=>{
                         if(broj==0){
