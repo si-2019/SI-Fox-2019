@@ -1,5 +1,7 @@
 # Modul Profesori
 
+Mikroservisi i apiji - Swagger fajl na ruti https://si2019fox.herokuapp.com/api-docs/
+
 ### Tim: Fox
 
 ### Članovi tima:
