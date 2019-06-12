@@ -7,16 +7,19 @@ const cors = require('cors');
 
 const predmeti = [
     {
-        id: 1,
-        naziv: "Tehnike programiranja"
+        id: 64,
+        naziv: "Tehnike programiranja",
+        opis: "Opis predmeta"
     },
     {
         id: 2,
-        naziv: "Numerički algoritmi"
+        naziv: "Numerički algoritmi",
+        opis: "Opis predmeta"
     },
     {
         id: 3,
-        naziv: "Diskretna matematika"
+        naziv: "Diskretna matematika",
+        opis: "Opis predmeta"
     }
 ]
 
@@ -34,7 +37,7 @@ const grupe = [
         naziv: "Grupa 3"
     }
 ]
-
+///api/fox/predmeti/:idKorisnika
 pocetnaStranicaAPIRouter.get('/predmeti/:idKorisnika', cors(), (req, res) => {
     console.log(req.params.idKorisnika);
     axios.get('http://localhost:31901/api/korisnik/getPredmetiAsisProf/', {
