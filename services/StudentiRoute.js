@@ -4,6 +4,7 @@ const studentiUtils = require('../utils/studentiUtils');
 
 
 //get studenata na predmetu sa podacima
+// /fox/studenti/:idPremdeta
 studentiRouter.get('/:idPredmeta', (req, res) => {
     let idPredmeta = req.params.idPredmeta;
     
