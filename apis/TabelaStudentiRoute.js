@@ -177,7 +177,7 @@ tabelaStudentiAPIRouter.get('/predmet/:idPredmeta', (req,res) => {
                 axios.get("https://si2019fox.herokuapp.com/fox/prisustvo/bodovi?idStudenta="+res1.data[i].id+"&idPredmeta="+idPredmeta).then( (resBodovi) => {
                     //Azuriramo studenta
                     console.log(sviStudenti[0]); console.log(i);
-                    sviStudenti = azurirajPrisustvo(sviStudenti[i].id, sviStudenti, resBodovi.data.bodovi);
+                    sviStudenti = azurirajPrisustvo(sviStudenti[0].id, sviStudenti, resBodovi.data.bodovi);
                 }).catch(
                     (err) => {console.log(err)}
                 )
@@ -201,7 +201,7 @@ tabelaStudentiAPIRouter.get('/predmet/:idPredmeta', (req,res) => {
                 })
             );
             promisesZadace.push(axios.get("https://si2019kilo.herokuapp.com/bodoviZadace/:idStudenta/:idPredmet").then((resZadace) => {
-                 sviStudenti = azurirajZadace(res1.data[i].id, sviStudenti, resZadace.data);
+                 sviStudenti = azurirajZadace(sviStudenti[0].id, sviStudenti, resZadace.data);
                 })
             );
                 

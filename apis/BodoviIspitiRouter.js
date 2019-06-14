@@ -29,7 +29,7 @@ function getIspiti(endpoint) {
 // prikaz u padajucem meniju)
 // GET na /api/fox/ispiti/:idPredmet
 router.get('/:idPredmeta', cors(), (req, res) => {
-    getIspiti(`http://localhost:31903/kreiraniIspiti/predmet/${req.params.idPredmet}`)
+    getIspiti(`https://si2019charlie.herokuapp.com/kreiraniIspiti/predmet/${req.params.idPredmet}`)
         .then(ispiti => {
             let ispitiTipDatum = [];
             ispiti.forEach(ispit => {
@@ -51,18 +51,27 @@ router.post('/', cors(), (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200); console.log(req.body)
-
-    axios.post('http://localhost:31906/fox/bodoviIspit', {
-        "idKorisnika": req.body.idStudent,
-        "bodovi": req.body.bodovi,
-        "idIspita": req.body.idIspit
-    }).then((response) => {
-        if (response.status != 200) {
-            res.status(400);
-            res.send(response.data);
-        }
-        res.status(200).json(response.data);
-    }).catch((err) => { res.status(err.response.status); res.send(err.response.data); });
+    
+    // axios.get("https://si2019oscar.herokuapp.com/pretragaId/imaPrivilegiju/3/unosenje-bodova-ispita").then((pristup)=>{
+    //     if(pristup.data === true) {
+            axios.post('https://si2019fox.herokuapp.com/fox/bodoviIspit', {
+            "idKorisnika": req.body.idStudent,
+            "bodovi": req.body.bodovi,
+            "idIspita": req.body.idIspit
+            }).then((response) => {
+                if (response.status != 200) {
+                    res.status(400);
+                    res.send(response.data);
+                }
+                res.status(200).json(response.data);
+            }).catch((err) => { res.status(err.response.status); res.send(err.response.data); });
+    //     }
+    //     else {
+    //         res.send(JSON.stringify("Nemate privilegiju da pristupite ovoj stranici."));
+    //     }
+    // });
+     
+    
 });
 
 module.exports = router;

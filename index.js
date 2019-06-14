@@ -88,6 +88,19 @@ app.use('/api/fox/ispiti', bodoviIspitiRouter);
 
 //------------Hardkodirani APIji-----------------------------------------
 
+app.post('/api/fox/posaljiObavijest', cors(), (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    let naziv = req.body.naziv;
+    let opis = req.body.opis;
+    let idPredmeta = req.body.idPredmeta;
+    let idProfesora = req.body.idProfesora;
+    //Provjera privilegija
+    //Poziv apija
+    res.status(400);
+    res.send(JSON.stringify("Obavijest nije poslana! Greška sa bazom"));
+});
+
 //Return info for table Studenti
 const studenti = [
     {
