@@ -11,19 +11,25 @@ router.post('/', cors(), (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200); console.log(req.body)
-
-    axios.post('http://localhost:31906/fox/ocjene/ocjena', {
-        "idStudent": req.body.idStudent,
-        "idPredmet": req.body.idPredmet,
-        "idAkademskaGodina": '11', // ??? treba dobiti trenutnu akGod
-        "ocjena": req.body.ocjena
-    }).then((response) => {
-        if (response.status != 200) {
-            res.status(400);
-            res.send(response.data);
-        }
-        res.status(200).json(response.data);
-    }).catch((err) => { res.status(err.response.status); res.send(err.response.data); });
+    // axios.get("https://si2019oscar.herokuapp.com/pretragaId/imaPrivilegiju/3/unos-konacne-ocjene").then((pristup)=>{
+    //     if(pristup.data === true) {
+            axios.post('https://si2019fox.herokuapp.com/fox/ocjene/ocjena', {
+                "idStudent": req.body.idStudent,
+                "idPredmet": req.body.idPredmet,
+                "idAkademskaGodina": '11', // ??? treba dobiti trenutnu akGod
+                "ocjena": req.body.ocjena
+            }).then((response) => {
+                if (response.status != 200) {
+                    res.status(400);
+                    res.send(response.data);
+                }
+                res.status(200).json(response.data);
+            }).catch((err) => { res.status(err.response.status); res.send(err.response.data); });
+    //     }
+    //     else {
+    //         res.send(JSON.stringify("Nemate privilegiju da pristupite ovoj stranici."));
+    //     }
+    // });
 });
 
 module.exports = router;

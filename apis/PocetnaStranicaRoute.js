@@ -40,29 +40,37 @@ const grupe = [
 ///api/fox/predmeti/:idKorisnika
 pocetnaStranicaAPIRouter.get('/predmeti/:idKorisnika', cors(), (req, res) => {
     console.log(req.params.idKorisnika);
-    axios.get('http://localhost:31901/api/korisnik/getPredmetiAsisProf/', {
-        params: {
-            idKorisnik: req.params.idKorisnika, 
-            Uloga: 3
-        }
-    })
-    .then((resPredmeti) => {
-        //console.log(resPredmeti.data);
-        let listaPredmeta = [];
-        for (i in resPredmeti.data) {
-            listaPredmeta.push({
-                "id": resPredmeti.data[i].id,
-                "naziv" : resPredmeti.data[i].naziv,
-                "opis": resPredmeti.data[i].opis
+    //Autentikacija
+    //axios.get("https://si2019oscar.herokuapp.com/pretragaId/imaPrivilegiju"+req.params.idKorisnika+"/pregled-predmeta-saradnik").then((pristup)=>{
+        //if (pristup.data === true) {
+            axios.get('https://si2019alpha.herokuapp.com/api/korisnik/getPredmetiAsisProf/', {
+                params: {
+                    idKorisnik: req.params.idKorisnika, 
+                    Uloga: 3
+                }
+            })
+            .then((resPredmeti) => {
+                //console.log(resPredmeti.data);
+                let listaPredmeta = [];
+                for (i in resPredmeti.data) {
+                    listaPredmeta.push({
+                        "id": resPredmeti.data[i].id,
+                        "naziv" : resPredmeti.data[i].naziv,
+                        "opis": resPredmeti.data[i].opis
+                    });
+                }
+        
+                res.send(listaPredmeta);
+            })
+            .catch((err) => {
+                console.log(err.message);
+                res.json(predmeti);
             });
-        }
-
-        res.send(listaPredmeta);
-    })
-    .catch((err) => {
-        console.log(err.message);
-        res.json(predmeti);
-    });
+        // }
+        // else {
+        //     res.send(JSON.stringify("Nemate privilegiju da pristupite ovoj stranici."))
+        // }
+    // });
 });
 
 pocetnaStranicaAPIRouter.get('/grupe/:idPredmeta', cors(), (req, res) => {
