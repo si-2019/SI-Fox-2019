@@ -40,7 +40,7 @@ const grupe = [
 ///api/fox/predmeti/:idKorisnika
 pocetnaStranicaAPIRouter.get('/predmeti/:idKorisnika', cors(), (req, res) => {
     console.log(req.params.idKorisnika);
-    axios.get('http://localhost:31901/api/korisnik/getPredmetiAsisProf/', {
+    axios.get('https://si2019alpha.herokuapp.com/api/korisnik/getPredmetiAsisProf/', {
         params: {
             idKorisnik: req.params.idKorisnika, 
             Uloga: 3

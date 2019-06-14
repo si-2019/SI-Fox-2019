@@ -81,7 +81,7 @@ function getAllStudents(endpoint) {
 // rezultat je objekat {ime: "ime", indeks: "indeks", id: _id}
 // GET na api/fox/tabelaStudenti/:index
 tabelaStudentiAPIRouter.get('/:index', (req, res) => {
-    getAllStudents("http://localhost:31901/api/korisnik/getAllStudents")
+    getAllStudents("https://si2019alpha.herokuapp.com/api/korisnik/getAllStudents")
         .then(students => {
             const student = students.find(s => s.indeks === req.params.index);
             if(!student) 
@@ -158,7 +158,7 @@ tabelaStudentiAPIRouter.get('/predmet/:idPredmeta', (req,res) => {
     promisesZadace = [];
     promisesOcjena = [];
     promisesIspiti= [];
-    rutaStudenti="http://localhost:31906/fox/studenti/"+idPredmeta;
+    rutaStudenti="https://si2019fox.herokuapp.com/fox/studenti/"+idPredmeta;
     //Poziv apija koji vraca listu svih studenata koji slusaju predmet 
     axios.get(rutaStudenti).then((res1) => {
         for (var i = 0; i<res1.data.length; i++) {
@@ -174,16 +174,16 @@ tabelaStudentiAPIRouter.get('/predmet/:idPredmeta', (req,res) => {
              });
             promisesPrisustvo.push(
                 //http://localhost:31906/fox/prisustvo/bodovi?idStudenta=104&idPredmeta=101
-                axios.get("http://localhost:31906/fox/prisustvo/bodovi?idStudenta="+res1.data[i].id+"&idPredmeta="+idPredmeta).then( (resBodovi) => {
+                axios.get("https://si2019fox.herokuapp.com/fox/prisustvo/bodovi?idStudenta="+res1.data[i].id+"&idPredmeta="+idPredmeta).then( (resBodovi) => {
                     //Azuriramo studenta
                     console.log(sviStudenti[0]); console.log(i);
-                    sviStudenti = azurirajPrisustvo(sviStudenti[0].id, sviStudenti, resBodovi.data.bodovi);
+                    sviStudenti = azurirajPrisustvo(sviStudenti[i].id, sviStudenti, resBodovi.data.bodovi);
                 }).catch(
                     (err) => {console.log(err)}
                 )
                 //vraca {"bodovi": 10}
             )
-            promisesOcjena.push(axios.get("http://localhost:31906/fox/ocjene/"+res1.data[i].indeks+"/"+idPredmeta).then( (resOcjena) => {
+            promisesOcjena.push(axios.get("https://si2019fox.herokuapp.com/fox/ocjene/"+res1.data[i].indeks+"/"+idPredmeta).then( (resOcjena) => {
                 //Azuriramo ocjenu
                 sviStudenti = azurirajOcjenu(resOcjena.data[i].idStudent, sviStudenti, resOcjena.data.ocjena);
                 //http://localhost:31906/fox/ocjene/1/3 //index/idPredmeta
@@ -200,9 +200,13 @@ tabelaStudentiAPIRouter.get('/predmet/:idPredmeta', (req,res) => {
                 // ]    
                 })
             );
+            promisesZadace.push(axios.get("https://si2019kilo.herokuapp.com/bodoviZadace/:idStudenta/:idPredmet").then((resZadace) => {
+                 sviStudenti = azurirajZadace(res1.data[i].id, sviStudenti, resZadace.data);
+                })
+            );
                 
         }
-        axios.all(promisesPrisustvo, promisesOcjena).then(() => {
+        axios.all(promisesPrisustvo, promisesOcjena, promisesZadace).then(() => { //add promisesZadace
             //Sve završeno
             sviStudenti = azurirajUkupno(sviStudenti);
         }).then(res.send(sviStudenti)); 

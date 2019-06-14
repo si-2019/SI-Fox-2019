@@ -61,7 +61,7 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
     let idPredmeta = req.params.idPredmeta;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
-    axios.get('http://localhost:31906/fox/teme/'+idPredmeta)
+    axios.get('https://si2019fox.herokuapp.com/fox/teme/'+idPredmeta)
     .then(
         (res1) => {
             let nizTema = res1.data; //id, naziv, opis teme 
@@ -70,7 +70,7 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
             for(i in nizTema) {
                 let id = nizTema[i].id;
                 teme.push(kreirajTemu(id, nizTema[i].naziv, nizTema[i].opis, "ne", ""));
-                promises.push(axios.get('http://localhost:31906/fox/teme/zahtjevi/'+id));     
+                promises.push(axios.get('https://si2019fox.herokuapp.com/fox/teme/zahtjevi/'+id));     
             } 
             axios.all(promises).then(function(results) {
                 promises2 = [];
@@ -82,7 +82,7 @@ temeZavrsnihAPIRouter.get('/tabelaTemeZavsnih/:idPredmeta', cors(), (req, res) =
                             // console.log("poziv");
                             teme = azurirajOdobrena(response.data.idTema, teme);
                             teme = upisiStudent(response.data.idTema, teme, response.data.idStudent);
-                            promises2.push(axios.get('http://localhost:31906/fox/getStudentInfo/'+response.data.idStudent));
+                            promises2.push(axios.get('https://si2019fox.herokuapp.com/fox/getStudentInfo/'+response.data.idStudent));
                         }
                         
                     }
@@ -118,7 +118,7 @@ temeZavrsnihAPIRouter.post('/novaTema', (req, res) => {
     idProfesora = req.body.idProfesora;
     idPredmeta = req.body.idPredmeta;
 
-    axios.post('http://localhost:31906/fox/teme/novaTema', {
+    axios.post('https://si2019fox.herokuapp.com/fox/teme/novaTema', {
         "naziv": naziv,
         "opis": opis,
         "idProfesora": idProfesora,
@@ -128,7 +128,7 @@ temeZavrsnihAPIRouter.post('/novaTema', (req, res) => {
             res.status(400);
             res.send(response.data);
         }
-        axios.post('http://localhost:31906/fox/teme/dodajZahtjev', {
+        axios.post('https://si2019fox.herokuapp.com/fox/teme/dodajZahtjev', {
         "idTema":  response.data.tema.id,
         "idStudent": null,
         "idProfesor": idProfesora,
@@ -149,7 +149,7 @@ temeZavrsnihAPIRouter.put('/izmjeniTemu/:idTema', (req, res) => {
     opis = req.body.opis;
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
-    axios.put('http://localhost:31906/fox/teme/izmjeniTemu/'+idTema, {
+    axios.put('https://si2019fox.herokuapp.com/fox/teme/izmjeniTemu/'+idTema, {
         "naziv": naziv,
         "opis": opis
     }).then((response) => {
@@ -167,7 +167,7 @@ temeZavrsnihAPIRouter.delete('/izbrisiTemu/:idTema', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200);
-    p1=axios.delete('http://localhost:31906/fox/teme/izbrisiTemu/'+idTema).then((response) => {
+    p1=axios.delete('https://si2019fox.herokuapp.com/fox/teme/izbrisiTemu/'+idTema).then((response) => {
        // console.log(response.status);
         if (response.status != 200) {
             res.status(response.status);
@@ -176,7 +176,7 @@ temeZavrsnihAPIRouter.delete('/izbrisiTemu/:idTema', (req, res) => {
         }
     }).catch((err) => {greska = true; res.status(err.response.status); res.send(err.response.data);});
     
-    p2=axios.delete('http://localhost:31906/fox/teme/izbrisiZahtjev/'+idTema).then((response) => {
+    p2=axios.delete('https://si2019fox.herokuapp.com/fox/teme/izbrisiZahtjev/'+idTema).then((response) => {
        // console.log(response.status);
         if (response.status != 200) {
             res.status(response.status);
