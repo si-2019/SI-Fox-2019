@@ -500,8 +500,7 @@ paths:
       tags:
       - pocetnaStranica - APIs
       summary: Dobavlja sve grupe koji su vezani za dati predmet
-      description: "Api dobavlja sve grupe koje postoje na predmetu sa id-em idPredmeta\
-        \ \n"
+      description: "Api dobavlja sve grupe koje postoje na predmetu sa id-em idPredmeta"
       operationId: grupe
       parameters:
       - name: idPredmeta
@@ -737,15 +736,7 @@ paths:
         required: true
       responses:
         200:
-          description: "Uspjesno azuriranje!\n\n/fox/unosPodataka/unosTeme/{idPredmeta}:\
-            \ get: tags: - unosTeme - APIs summary: Dobavlja podatke o temama na datom\
-            \ predmetu description: | Api dobavlja sve trenutno ponudjene teme koje\
-            \ pripadaju predmetu sa poslanim id-em. operationId: unosTeme parameters:\
-            \ - name: idPredmeta in: path description: obavezan parametar id koji\
-            \ označava predmet required: true style: simple explode: false schema:\
-            \ minimum: 0 type: integer format: int64 responses: 200: description:\
-            \ uspješna pretraga tema content: application/json: schema: type: array\
-            \ items: $ref: "
+          description: "Uspjesno azuriranje!"
         400:
           description: pogrešan id
         404:
