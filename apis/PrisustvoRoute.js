@@ -4,31 +4,20 @@ const axios = require('axios');
 const cors = require('cors');
 const db = require('../models/db');
 
-/*let studenti=[
-    {
-    idPredmeta:4,
-    idStudenta:230,
-    ime:"Neko Nekic",
-    indeks:12345
-},{
-    idPredmeta:4,
-    idStudenta:2,
-    ime:"Neko Nekic",
-    indeks:12346
-}];*/
+
 //upis u tabele
 
 prisustvoAPIRouter.post('/updateTabela', cors(), (req, res) => {
     let idPredmeta = req.query.idPredmeta;
-    rutaStudenti="http://localhost:31906/fox/studenti/"+idPredmeta;
+    rutaStudenti="https://si2019fox.herokuapp.com/fox/studenti/"+idPredmeta;
     axios.get(rutaStudenti).then((s)=>{
         let studenti=s.data;
         let promises=[];
         for(i in studenti){
             let id=studenti[i].id;
-            let ruta1='http://localhost:31906/fox/prisustvo/addPredavanja';
-            let ruta2='http://localhost:31906/fox/prisustvo/addVjezbe';
-            let ruta3='http://localhost:31906/fox/prisustvo/addTutorijali'; 
+            let ruta1='https://si2019fox.herokuapp.com/fox/prisustvo/addPredavanja';
+            let ruta2='https://si2019fox.herokuapp.com/fox/prisustvo/addVjezbe';
+            let ruta3='https://si2019fox.herokuapp.com/fox/prisustvo/addTutorijali'; 
             
             for(i = 1; i <= 14; i++){
                 //unesi predavanje
@@ -76,16 +65,16 @@ prisustvoAPIRouter.get('', cors(), (req, res) => {
     let brojSedmice = req.query.brojSedmice;
     let tabela=[];
     //dobavi studente
-    rutaStudenti="http://localhost:31906/fox/studenti/"+idPredmeta;
+    rutaStudenti="https://si2019fox.herokuapp.com/fox/studenti/"+idPredmeta;
     axios.get(rutaStudenti).then((s)=>{
         let studenti=s.data;
         for(i in studenti){
             let id=studenti[i].id;
             let ime=studenti[i].ime+" "+studenti[i].prezime;
             let indeks=studenti[i].indeks;
-            let ruta1='http://localhost:31906/fox/prisustvo/predavanja?idStudenta='+id+'&idPredmeta='+idPredmeta+'&brojSedmice='+brojSedmice;
-            let ruta2='http://localhost:31906/fox/prisustvo/tutorijali?idStudenta='+id+'&idPredmeta='+idPredmeta+'&brojSedmice='+brojSedmice;
-            let ruta3='http://localhost:31906/fox/prisustvo/vjezbe?idStudenta='+id+'&idPredmeta='+idPredmeta+'&brojSedmice='+brojSedmice;
+            let ruta1='https://si2019fox.herokuapp.com/fox/prisustvo/predavanja?idStudenta='+id+'&idPredmeta='+idPredmeta+'&brojSedmice='+brojSedmice;
+            let ruta2='https://si2019fox.herokuapp.com/fox/prisustvo/tutorijali?idStudenta='+id+'&idPredmeta='+idPredmeta+'&brojSedmice='+brojSedmice;
+            let ruta3='https://si2019fox.herokuapp.com/fox/prisustvo/vjezbe?idStudenta='+id+'&idPredmeta='+idPredmeta+'&brojSedmice='+brojSedmice;
             r1=axios.get(ruta1).then(
                 (prisustvo)=>{
                     let predavanje;
@@ -134,128 +123,7 @@ prisustvoAPIRouter.get('', cors(), (req, res) => {
     });
 
 });
-/*prisustvoAPIRouter.put('/azurirajPredavanje', cors(), (req, res) => {
-    
-    let status=req.query.status;
-    let promises=[];
-    if(status=="null"){
-        status=null;
-    }
-    let idPredmeta=req.query.idPredmeta;
-    let brojSedmice=req.query.brojSedmice;
-    res.setHeader('Content-Type', 'application/json');
-    db.PrisustvoPredavanja.findAll(
-        {attributes: ['idStudenta']},{
-        where: {idPredmeta:idPredmeta,brojSedmice:brojSedmice}
-    }).then((prisustvo) => { //Ne detektuje gresku :()
-        if(!prisustvo || prisustvo.length==0){
-        } //Greska - ne postoji
-        else {
-            for(i in prisustvo){
-                let idStudenta=prisustvo[i].idStudenta;
-                let r1=axios.put('http://localhost:31906/fox/prisustvo/unosPredavanja', {
-                "idStudenta": idStudenta,
-                "idPredmeta": idPredmeta,
-                "prisutan": status,
-                "brojSedmice": brojSedmice
-            });
-            promises.push(r1);
-         }
-         Promise.all(promises).then(()=> {
-            res.status(200);
-            res.send(JSON.stringify( {
-                message: 'Uspjesno azuriranje!'
-                }));
-         }).catch((err) => {
-            res.status(err.response.status);
-            res.send(err.response.data);
-        });
-        }
-    });
-});
-prisustvoAPIRouter.put('/azurirajTutorijal', cors(), (req, res) => {
-    
-    let status=req.query.status;
-    let idPredmeta=req.query.idPredmeta;
-    let brojSedmice=req.query.brojSedmice;
-    let promises=[];
-    if(status=="null"){
-        status=null;
-    }
-    res.setHeader('Content-Type', 'application/json');
-    db.PrisustvoTutorijali.findAll(
-        {attributes: ['idStudenta']},{
-        where: {idPredmeta:idPredmeta,brojSedmice:brojSedmice}
-    }).then((prisustvo) => { //Ne detektuje gresku :()
-        if(!prisustvo || prisustvo.length==0){
-        } //Greska - ne postoji
-        else {
-            
-            for(i in prisustvo){
-                let idStudenta=prisustvo[i].idStudenta;
-                let promise=axios.put('http://localhost:31906/fox/prisustvo/unosTutorijali', {
-                "idStudenta": idStudenta,
-                "idPredmeta": idPredmeta,
-                "prisutan": status,
-                "brojSedmice": brojSedmice
-            });
-            promises.push(promise);
-           
-         }
-         Promise.all(promises).then(()=> {
-            res.status(200);
-            res.send(JSON.stringify( {
-                message: 'Uspjesno azuriranje!'
-                }));
-         }).catch((err) => {
-            res.status(err.response.status);
-            res.send(err.response.data);
-        });
-        };
-    });
-    
-    
-});
 
-prisustvoAPIRouter.put('/azurirajVjezbe', cors(), (req, res) => {
-    
-    let status=req.query.status;
-    let promises=[];
-    if(status=="null"){
-        status=null;
-    }
-    let idPredmeta=req.query.idPredmeta;
-    let brojSedmice=req.query.brojSedmice;
-    res.setHeader('Content-Type', 'application/json');
-    db.PrisustvoVjezbe.findAll(
-        {attributes: ['idStudenta']},{
-        where: {idPredmeta:idPredmeta,brojSedmice:brojSedmice}
-    }).then((prisustvo) => { //Ne detektuje gresku :()
-        if(!prisustvo || prisustvo.length==0){
-        } //Greska - ne postoji
-        else {
-            for(i in prisustvo){
-                let idStudenta=prisustvo[i].idStudenta;
-                axios.put('http://localhost:31906/fox/prisustvo/unosVjezbe', {
-                "idStudenta": idStudenta,
-                "idPredmeta": idPredmeta,
-                "prisutan": status,
-                "brojSedmice": brojSedmice
-            });
-            promises.push(promise);
-         }
-         Promise.all(promises).then(()=> {
-            res.status(200);
-            res.send(JSON.stringify( {
-                message: 'Uspjesno azuriranje!'
-                }));
-         }).catch((err) => {
-            res.status(err.response.status);
-            res.send(err.response.data);
-        });
-        };
-    });
-});*/
 prisustvoAPIRouter.put('/unosIzmjena', cors(), (req, res) => {
     let tabela=req.body;
     let idPredmeta=req.query.idPredmeta;
@@ -267,9 +135,9 @@ prisustvoAPIRouter.put('/unosIzmjena', cors(), (req, res) => {
         let predavanje=student.predavanje;
         let tutorijal=student.tutorijal;
         let vjezbe=student.vjezbe;
-        let ruta1='http://localhost:31906/fox/prisustvo/unosPredavanja';
-        let ruta2='http://localhost:31906/fox/prisustvo/unosVjezbe';
-        let ruta3='http://localhost:31906/fox/prisustvo/unosTutorijali';
+        let ruta1='https://si2019fox.herokuapp.com/fox/prisustvo/unosPredavanja';
+        let ruta2='https://si2019fox.herokuapp.com/fox/prisustvo/unosVjezbe';
+        let ruta3='https://si2019fox.herokuapp.com/fox/prisustvo/unosTutorijali';
         r1=axios.put(ruta1, {
             "idStudenta": idStudenta,
             "idPredmeta": idPredmeta,
