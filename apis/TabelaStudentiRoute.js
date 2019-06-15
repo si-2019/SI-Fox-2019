@@ -169,7 +169,7 @@ tabelaStudentiAPIRouter.get('/predmet/:idPredmeta', (req,res) => {
                 prisustvo: 0,
                 zadace: 0,
                 ukupno: vratiBodove(),
-                ocjena: 7,
+                ocjena: 5,
                 ispiti: ispiti
              });
             promisesPrisustvo.push(
