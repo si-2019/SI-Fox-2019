@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 console.log(process.env.db_name + " " + process.env.db_user + " " + process.env.db_password)
-const sequelize = new Sequelize(process.env.db_name, process.env.db_user, process.env.db_password, {
+/*const sequelize = new Sequelize(process.env.db_name, process.env.db_user, process.env.db_password, {
     host: process.env.db_host_ip,
     dialect: "mysql",
     logging: false,
@@ -8,7 +8,17 @@ const sequelize = new Sequelize(process.env.db_name, process.env.db_user, proces
     define: {
         timestamps: false
     }
+});*/
+
+//New db config
+//const sequelize = new Sequelize("bREZd5lSqZ", "bREZd5lSqZ", "vdPjFjFYz3", {
+const sequelize = new Sequelize("TYQcLL35gV", "TYQcLL35gV", "BLysSj9ZrP", {
+  host: "mysql-3213-0.cloudclusters.net",
+  dialect: "mysql",
+  port: 10021,
+  logging: false
 });
+
 const db = {}
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
